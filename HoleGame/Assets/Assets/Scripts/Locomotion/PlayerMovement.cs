@@ -15,9 +15,11 @@ public class PlayerMovement : MonoBehaviour
   private Rigidbody rb;
   private Vector3 targetPosition;
   private Camera mainCam;
+  private PlayerArrow arrow;
 
   void Awake()
   {
+    arrow = GetComponentInChildren<PlayerArrow>();
     rb = GetComponent<Rigidbody>();
     mainCam = Camera.main;
 
@@ -102,11 +104,11 @@ public class PlayerMovement : MonoBehaviour
       rb.velocity = velocity;
 
       // Плавний поворот у напрямку руху (щоб діра котилася правильно)
-      if (direction != Vector3.zero)
-      {
-        Quaternion targetRot = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
-      }
+      // if (direction != Vector3.zero)
+      // {
+      //   Quaternion targetRot = Quaternion.LookRotation(direction);
+      //   arrow.transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+      // }
     }
     else
     {
