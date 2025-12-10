@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class PlayerArrow : MonoBehaviour
 {
+  private PlayerMovement player;
   public float rotationSpeed;
-   
-public void RotateArrowTowardsTarget(Transform target)
-  {
-    var fromRotation = transform.rotation;
-    var toRotation = Quaternion.LookRotation(target.position - transform.position);
-    var speed  =rotationSpeed * Time.deltaTime;
 
-    transform.rotation = Quaternion.Slerp(fromRotation, toRotation, speed);
+  private void Awake() {
+    player = GetComponentInParent<PlayerMovement>();
+  }
+
+  void Update()
+  {
+    if (player == null) return;
+
+    // Обертаємо ВСЮ обгортку НАПРОТИК напрямку гравця (Y-ротація)
+    // Стрілка всередині фіксована (вістрям "вгору" = Z=0)
+    transform.localEulerAngles = new Vector3(0f, 0f, -player.transform.eulerAngles.y);
   }
 }

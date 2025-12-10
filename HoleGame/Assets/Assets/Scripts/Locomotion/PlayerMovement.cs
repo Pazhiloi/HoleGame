@@ -15,11 +15,9 @@ public class PlayerMovement : MonoBehaviour
   private Rigidbody rb;
   private Vector3 targetPosition;
   private Camera mainCam;
-  private PlayerArrow arrow;
 
   void Awake()
   {
-    arrow = GetComponentInChildren<PlayerArrow>();
     rb = GetComponent<Rigidbody>();
     mainCam = Camera.main;
 
