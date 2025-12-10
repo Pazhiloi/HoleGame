@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
   [Header("Налаштування руху")]
   public float moveSpeed = 8f;           // швидкість переміщення
-  public float rotationSpeed = 12f;      // як швидко повертається до напрямку руху
+  public float rotationSpeed = 12f;      // як швидко повертається до напрямку руху (якщо ввімкнеш)
   public float arrivalDistance = 0.5f;   // на якій відстані вважати, що дійшли
 
   [Header("Клік мишею")]
@@ -16,12 +14,15 @@ public class PlayerMovement : MonoBehaviour
   private Vector3 targetPosition;
   private Camera mainCam;
 
+  // Додаємо прапорець: рухаємося ми до точки кліку чи ні
+  private bool isMovingToClick = false;
+
   void Awake()
   {
     rb = GetComponent<Rigidbody>();
     mainCam = Camera.main;
 
-    // Починаємо з поточної позиції (щоб не їхала нікуди)
+    // Початкова позиція — сама себе
     targetPosition = transform.position;
   }
 
@@ -38,13 +39,14 @@ public class PlayerMovement : MonoBehaviour
 
   void HandleMouseClick()
   {
-    if (Input.GetMouseButtonDown(0)) // ліва кнопка
+    if (Input.GetMouseButtonDown(0)) // ліва кнопка миші
     {
       Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
       if (Physics.Raycast(ray, out RaycastHit hit, 200f, groundLayer))
       {
         targetPosition = hit.point;
         targetPosition.y = transform.position.y; // залишаємо ту ж висоту
+        isMovingToClick = true; // вмикаємо режим руху до кліку
       }
     }
   }
@@ -63,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 desiredDir = Vector3.zero;
 
-    // Пріоритет: спочатку WASD (як у нормальних іграх), потім стрілки
+    // Пріоритет: WASD, потім стрілки
     if (inputWASD.sqrMagnitude > 0.01f)
     {
       Vector3 camForward = mainCam.transform.forward;
@@ -78,17 +80,26 @@ public class PlayerMovement : MonoBehaviour
       desiredDir = new Vector3(inputArrows.x, 0, inputArrows.z).normalized;
     }
 
-    // Якщо є ввід з клавіатури — постійно оновлюємо ціль далеко вперед
+    // Якщо є ввід з клавіатури — рухаємося в цьому напрямку і вимикаємо рух до кліку
     if (desiredDir != Vector3.zero)
     {
-      targetPosition = transform.position + desiredDir * 100f;
+      targetPosition = transform.position + desiredDir * 100f; // дуже далеко вперед
+      isMovingToClick = false; // клавіші мають пріоритет над кліком
+    }
+    else
+    {
+      // Якщо клавіші відпущені І ми не рухаємося до точки кліку — зупиняємося
+      if (!isMovingToClick)
+      {
+        targetPosition = transform.position; // ціль = поточна позиція → зупинка
+      }
     }
   }
 
   void MoveTowardsTarget()
   {
     Vector3 toTarget = targetPosition - transform.position;
-    toTarget.y = 0; // рухаємося тільки по X/Z
+    toTarget.y = 0;
 
     float distance = toTarget.magnitude;
 
@@ -96,27 +107,52 @@ public class PlayerMovement : MonoBehaviour
     {
       Vector3 direction = toTarget.normalized;
 
-      // Рух (в FixedUpdate — через фізику)
+      // Рух
       Vector3 velocity = direction * moveSpeed;
-      velocity.y = rb.velocity.y; // зберігаємо вертикальну швидкість (падіння тощо)
+      velocity.y = rb.velocity.y; // зберігаємо Y (гравітація тощо)
       rb.velocity = velocity;
 
-      // Плавний поворот у напрямку руху (щоб діра котилася правильно)
+      // Плавний поворот (якщо захочеш увімкнути — розкоментуй)
       // if (direction != Vector3.zero)
       // {
-      //   Quaternion targetRot = Quaternion.LookRotation(direction);
-      //   arrow.transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+      //     Quaternion targetRot = Quaternion.LookRotation(direction);
+      //     transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
       // }
     }
     else
     {
-      // Дійшли — гальмуємо
+      // Дійшли до цілі або відпустили клавіші — зупиняємо горизонтальний рух
       rb.velocity = new Vector3(0, rb.velocity.y, 0);
       rb.angularVelocity = Vector3.zero;
+
+      // Якщо це був рух до кліку — вимикаємо прапорець
+      if (isMovingToClick)
+      {
+        isMovingToClick = false;
+      }
     }
   }
 
-  // Дебаг: бачимо куди їде діра
+  // Для компаса (стрілки UI) — повертає поточний напрямок руху
+  public Vector3 GetCurrentMoveDirection()
+  {
+    Vector3 dir = targetPosition - transform.position;
+    dir.y = 0;
+
+    if (dir.sqrMagnitude > 0.1f)
+      return dir.normalized;
+
+    if (rb.velocity.sqrMagnitude > 0.1f)
+    {
+      Vector3 vel = rb.velocity;
+      vel.y = 0;
+      return vel.normalized;
+    }
+
+    return transform.forward; // або Vector3.forward, якщо ротація не використовується
+  }
+
+  // Дебаг
   void OnDrawGizmosSelected()
   {
     Gizmos.color = Color.red;
