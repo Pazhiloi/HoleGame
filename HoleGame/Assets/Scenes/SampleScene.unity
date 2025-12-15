@@ -219,6 +219,8 @@ MonoBehaviour:
   totalXP: 0
   xpToNextLevel: 10
   xpSlider: {fileID: 839103739}
+  smoothTime: 0.3
+  mainCameraTransform: {fileID: 330585546}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0

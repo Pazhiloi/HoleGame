@@ -12,13 +12,20 @@ public class PlayerStats : MonoBehaviour
   public int xpToNextLevel = 10; // скільки потрібно для наступного рівня
   [Header("UI")]
   public Slider xpSlider;
-  public float smoothTime = 0.3f;     // швидкість анімації (0.2–0.5 — добре)
+  public float smoothTime = 0.3f;
+  public Transform mainCameraTransform;  // швидкість анімації (0.2–0.5 — добре)
 
   private Coroutine smoothCoroutine;  // щоб не плодити 100 корутин
+  private Coroutine scaleCoroutine;
+  private Coroutine cameraCoroutine;
+
+  private Vector3 targetScale;
   private void Awake()
   {
     if (xpSlider != null)
       xpSlider.value = GetProgress();
+
+    targetScale = transform.localScale;
   }
   private void Update()
   {
@@ -40,6 +47,15 @@ public class PlayerStats : MonoBehaviour
     {
       currentXP -= xpToNextLevel;
       currentLevel++;
+      // Збільшуємо гравця на 10%
+      targetScale *= 1.1f;
+      if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
+      scaleCoroutine = StartCoroutine(SmoothScale(targetScale));
+      if (mainCameraTransform != null)
+      {
+        if (cameraCoroutine != null) StopCoroutine(cameraCoroutine);
+        cameraCoroutine = StartCoroutine(SmoothCameraOffset(mainCameraTransform.localPosition * 1.1f));
+      }
 
       // Оновлюємо xpToNextLevel
       UpdateXPToNext();
@@ -93,6 +109,38 @@ public class PlayerStats : MonoBehaviour
     smoothCoroutine = null;
   }
 
+  // Плавна анімація масштабу гравця
+  private IEnumerator SmoothScale(Vector3 target)
+  {
+    Vector3 startScale = transform.localScale;
+    float elapsed = 0f;
+
+    while (elapsed < smoothTime)
+    {
+      elapsed += Time.deltaTime;
+      transform.localScale = Vector3.Lerp(startScale, target, elapsed / smoothTime);
+      yield return null;
+    }
+    transform.localScale = target;
+    scaleCoroutine = null;
+  }
+
+  // Плавний від'їзд камери (Y і Z)
+  private IEnumerator SmoothCameraOffset(Vector3 targetOffset)
+  {
+    Vector3 startOffset = mainCameraTransform.localPosition;
+    float elapsed = 0f;
+
+    while (elapsed < smoothTime)
+    {
+      elapsed += Time.deltaTime;
+      mainCameraTransform.localPosition = Vector3.Lerp(startOffset, targetOffset, elapsed / smoothTime);
+      yield return null;
+    }
+    mainCameraTransform.localPosition = targetOffset;
+    cameraCoroutine = null;
+  }
+
   // Геттери для UI
   public int Level => currentLevel;
   public int XP => currentXP;
@@ -101,9 +149,17 @@ public class PlayerStats : MonoBehaviour
 
   public void AddExpCheat()
   {
-    if (Input.GetKeyDown(KeyCode.Alpha9))
+    if (Input.GetKeyDown(KeyCode.Alpha7))
     {
       AddXP(1);
+    }
+    if (Input.GetKeyDown(KeyCode.Alpha8))
+    {
+      AddXP(10);
+    }
+    if (Input.GetKeyDown(KeyCode.Alpha9))
+    {
+      AddXP(50);
     }
   }
 }
