@@ -8,8 +8,11 @@ public class PlayerStats : MonoBehaviour
   [Header("Дані гравця")]
   public int currentLevel = 1;
   public int currentXP = 0;      // тимчасовий XP (скидається при level up)
-  public int totalXP = 0;        // загальний XP (не скидається)
+  public int totalXP = 0;    
   public int xpToNextLevel = 10; // скільки потрібно для наступного рівня
+  [Header("Збільшення гравця")]
+  public float increaseScale = 1.1f;
+  public float increaseOffset = 1.1f;
   [Header("UI")]
   public Slider xpSlider;
   public float smoothTime = 0.3f;
@@ -48,13 +51,13 @@ public class PlayerStats : MonoBehaviour
       currentXP -= xpToNextLevel;
       currentLevel++;
       // Збільшуємо гравця на 10%
-      targetScale *= 1.1f;
+      targetScale *= increaseScale;
       if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
       scaleCoroutine = StartCoroutine(SmoothScale(targetScale));
       if (mainCameraTransform != null)
       {
         if (cameraCoroutine != null) StopCoroutine(cameraCoroutine);
-        cameraCoroutine = StartCoroutine(SmoothCameraOffset(mainCameraTransform.localPosition * 1.1f));
+        cameraCoroutine = StartCoroutine(SmoothCameraOffset(mainCameraTransform.localPosition * increaseOffset));
       }
 
       // Оновлюємо xpToNextLevel
@@ -130,6 +133,7 @@ public class PlayerStats : MonoBehaviour
   {
     Vector3 startOffset = mainCameraTransform.localPosition;
     float elapsed = 0f;
+    yield return new WaitForSeconds(smoothTime);
 
     while (elapsed < smoothTime)
     {

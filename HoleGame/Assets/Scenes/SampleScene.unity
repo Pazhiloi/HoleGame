@@ -218,6 +218,8 @@ MonoBehaviour:
   currentXP: 0
   totalXP: 0
   xpToNextLevel: 10
+  increaseScale: 1.1
+  increaseOffset: 1.1
   xpSlider: {fileID: 839103739}
   smoothTime: 0.3
   mainCameraTransform: {fileID: 330585546}
