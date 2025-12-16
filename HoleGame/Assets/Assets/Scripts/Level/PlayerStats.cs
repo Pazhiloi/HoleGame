@@ -32,7 +32,7 @@ public class PlayerStats : MonoBehaviour
       xpSlider.value = GetProgress();
 
     targetScale = transform.localScale;
-    playerLevelUI.UpdateLevelText(currentLevel);
+    playerLevelUI.SetLevelText(currentLevel);
   }
   private void Update()
   {
@@ -54,7 +54,7 @@ public class PlayerStats : MonoBehaviour
     {
       currentXP -= xpToNextLevel;
       currentLevel++;
-      playerLevelUI.UpdateLevelText(currentLevel);
+      playerLevelUI.SetLevelTextWithAnim(currentLevel);
       // Збільшуємо гравця на 10%
       targetScale *= increaseScale;
       if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);

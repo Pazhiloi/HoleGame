@@ -237,6 +237,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelText: {fileID: 1377407262}
+  scaleParams: {x: 2, y: 2, z: 2}
+  scaleDuration: 0.1
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0

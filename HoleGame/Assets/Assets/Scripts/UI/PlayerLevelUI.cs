@@ -8,14 +8,18 @@ using DG.Tweening;
 public class PlayerLevelUI : MonoBehaviour
 {
   public TMP_Text levelText;
-  public Vector3 scaleParams = new Vector3(2f, 2f,2f);
+  public Vector3 scaleParams = new Vector3(2f,2f,2f);
   public float scaleDuration = 0.1f;
 
 
 
-  public void UpdateLevelText(int level)
+  public void SetLevelText(int level)
   {
-    levelText.transform.DOScale(scaleParams, scaleDuration).SetEase(Ease.Flash);
+    levelText.text = "Lvl" + level.ToString();
+  }
+  public void SetLevelTextWithAnim(int level)
+  {
+    levelText.transform.DOScale(scaleParams, scaleDuration).SetEase(Ease.Flash).SetLoops(2, LoopType.Yoyo); 
     levelText.text = "Lvl" + level.ToString();
   }
   
