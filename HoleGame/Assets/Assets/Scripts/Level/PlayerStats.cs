@@ -13,6 +13,8 @@ public class PlayerStats : MonoBehaviour
   [Header("Збільшення гравця")]
   public float increaseScale = 1.1f;
   public float increaseOffset = 1.1f;
+  [Header("Scripts")]
+  private PlayerLevelUI playerLevelUI;
   [Header("UI")]
   public Slider xpSlider;
   public float smoothTime = 0.3f;
@@ -25,10 +27,12 @@ public class PlayerStats : MonoBehaviour
   private Vector3 targetScale;
   private void Awake()
   {
+    playerLevelUI = GetComponent<PlayerLevelUI>();
     if (xpSlider != null)
       xpSlider.value = GetProgress();
 
     targetScale = transform.localScale;
+    playerLevelUI.UpdateLevelText(currentLevel);
   }
   private void Update()
   {
@@ -50,6 +54,7 @@ public class PlayerStats : MonoBehaviour
     {
       currentXP -= xpToNextLevel;
       currentLevel++;
+      playerLevelUI.UpdateLevelText(currentLevel);
       // Збільшуємо гравця на 10%
       targetScale *= increaseScale;
       if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
