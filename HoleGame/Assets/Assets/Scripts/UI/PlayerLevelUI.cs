@@ -10,6 +10,7 @@ public class PlayerLevelUI : MonoBehaviour
   public TMP_Text levelText;
   public Vector3 scaleParams = new Vector3(2f,2f,2f);
   public float scaleDuration = 0.1f;
+  public ParticleSystem rippleVFX;
 
 
 
@@ -21,6 +22,11 @@ public class PlayerLevelUI : MonoBehaviour
   {
     levelText.transform.DOScale(scaleParams, scaleDuration).SetEase(Ease.Flash).SetLoops(2, LoopType.Yoyo); 
     levelText.text = "Lvl" + level.ToString();
+  }
+
+  public void PlayRippleVFX()
+  {
+    rippleVFX.Play();
   }
   
 }

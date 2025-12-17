@@ -55,6 +55,7 @@ public class PlayerStats : MonoBehaviour
       currentXP -= xpToNextLevel;
       currentLevel++;
       playerLevelUI.SetLevelTextWithAnim(currentLevel);
+      playerLevelUI.PlayRippleVFX();
       // Збільшуємо гравця на 10%
       targetScale *= increaseScale;
       if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
