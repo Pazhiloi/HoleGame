@@ -9,14 +9,22 @@ public class PlayerLevelUI : MonoBehaviour
 {
   public TMP_Text levelText;
   public TMP_Text hideLevelText;
+  public TMP_Text hidePointText;
   public Vector3 scaleParams = new Vector3(2f,2f,2f);
   public float scaleDuration = 0.1f;
   public float moveHideTextDistance = 5f;
+  public float moveHidePointTextDistance = 5f;
   public float moveHideTextDuration = 0.3f;
+  public float moveHidePointTextDuration = 0.3f;
+  public int hideTextFontSize = 50;
   public ParticleSystem rippleVFX;
 
+  Vector3 pointTextStartPos;
+
   private void Awake() {
+    pointTextStartPos = hidePointText.transform.localPosition;
     hideLevelText.fontSize = 0;
+    hidePointText.gameObject.SetActive(false);
   }
 
 
@@ -39,7 +47,7 @@ public class PlayerLevelUI : MonoBehaviour
   {
     // 1. Початкові налаштування
     hideLevelText.text = "Level " + level.ToString();
-    hideLevelText.fontSize = 30;
+    hideLevelText.fontSize = hideTextFontSize;
 
     // Запам'ятовуємо початкову локальну позицію, щоб точно повернутися назад
     Vector3 startPos = hideLevelText.transform.localPosition;
@@ -53,6 +61,22 @@ public class PlayerLevelUI : MonoBehaviour
           hideLevelText.fontSize = 0;
           hideLevelText.transform.localPosition = startPos; // Повертаємо в точну початкову точку
         });
+  }
+
+  public void ShowAndHidePointText(int points)
+  {
+    hidePointText.gameObject.SetActive(true);
+    hidePointText.text = "+" + points.ToString();
+    
+
+    hidePointText.transform.DOLocalMoveY(pointTextStartPos.y + moveHidePointTextDistance, moveHidePointTextDuration)
+       .SetEase(Ease.OutQuad) // Плавне сповільнення в кінці
+       .OnComplete(() =>
+       {
+         // 3. Скидання після завершення
+         hidePointText.transform.localPosition = pointTextStartPos; // Повертаємо в точну початкову точку
+         hidePointText.gameObject.SetActive(false);
+       });
   }
 
 }

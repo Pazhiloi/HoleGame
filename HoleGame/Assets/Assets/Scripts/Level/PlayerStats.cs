@@ -48,6 +48,7 @@ public class PlayerStats : MonoBehaviour
 
     totalXP += amount;
     currentXP += amount;
+    playerLevelUI.ShowAndHidePointText(amount);
 
     // Level up loop
     while (currentXP >= xpToNextLevel)
