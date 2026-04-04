@@ -1,75 +1,86 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHole : MonoBehaviour
 {
-  [SerializeField] private float captureRadius = 0.5f; // Наскільки близько до центру має бути ворог, щоб впасти
-  [SerializeField] private float suckSpeed = 10f;     // Швидкість затягування в центр
-  private List<Enemy> enemiesInZone = new List<Enemy>();
+  [Header("Налаштування")]
+  [SerializeField] private float baseRadius = 1.5f; // Радіус при scale (1,1,1)
+  [SerializeField] private float suctionSpeed = 8f;
+  [SerializeField] private float fallSpeed = 5f;
+  [SerializeField] private float shrinkSpeed = 2f;
 
+  public PlayerStats playerStats;
 
-
-  private void Update() {
-    WorkWithEnemyList();
-  }
-  private void OnTriggerEnter(Collider other) {
-    Enemy enemy = other.GetComponent<Enemy>();
-
-    if (enemy != null && !enemiesInZone.Contains(enemy))
-    {
-      enemiesInZone.Add(enemy);
-    }
-    }
-
-  private void OnTriggerExit(Collider other)
-  {
-    Enemy enemy = other.GetComponent<Enemy>();
-    if (enemy != null)
-    {
-      enemiesInZone.Remove(enemy);
-    }
+  private void Awake() {
+    playerStats = GetComponent<PlayerStats>();
   }
 
+  // Геттер для отримання реального радіусу в реальному часі
+  public float CurrentRadius => baseRadius * transform.localScale.x;
 
-  private void WorkWithEnemyList()
+  private void OnTriggerStay(Collider other)
   {
-    for (int i = enemiesInZone.Count - 1; i >= 0; i--)
+    if (other.CompareTag("Enemy"))
     {
-      Enemy enemy = enemiesInZone[i];
-      if (enemy == null) { enemiesInZone.RemoveAt(i); continue; }
+      Vector3 holeCenter = transform.position;
+      Vector3 enemyPos = other.transform.position;
 
-      // Рахуємо дистанцію тільки по горизонталі (X та Z), ігноруючи висоту Y
+      // Рахуємо дистанцію в 2D (горизонтальна площина)
       float distance = Vector2.Distance(
-          new Vector2(transform.position.x, transform.position.z),
-          new Vector2(enemy.transform.position.x, enemy.transform.position.z)
+          new Vector2(holeCenter.x, holeCenter.z),
+          new Vector2(enemyPos.x, enemyPos.z)
       );
 
-      // Якщо ворог ще не падає, але він у зоні — підтягуємо його до центру
-      if (distance > captureRadius)
+      // Використовуємо динамічний радіус замість статичного
+      if (distance < CurrentRadius)
       {
-        // Ефект магніту: тягнемо ворога до центру дірки
-        Vector3 targetPos = new Vector3(transform.position.x, enemy.transform.position.y, transform.position.z);
-        enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, targetPos, suckSpeed * Time.deltaTime);
-      }
-      else
-      {
-        // Тільки коли він чітко над центром — він падає!
-        StartFalling(enemy);
-        enemiesInZone.RemoveAt(i);
+        ProcessFalling(other.gameObject, distance);
       }
     }
   }
 
-  private void StartFalling(Enemy enemy)
+  private void ProcessFalling(GameObject enemyObj, float distance)
   {
-    // Вимикаємо йому можливість ходити (AI)
-    enemy.enabled = false;
+    // Зупиняємо логіку ворога
+    Enemy enemyScript = enemyObj.GetComponent<Enemy>();
+    if (enemyScript != null) enemyScript.enabled = false;
 
-    // Робимо його тригером, щоб він провалився
-    enemy.enemyCollider.isTrigger = true;
+    Rigidbody rb = enemyObj.GetComponent<Rigidbody>();
+    if (rb != null)
+    {
+      rb.isKinematic = true;
+      rb.velocity = Vector3.zero;
+    }
 
-    // Знищуємо об'єкт через 2 секунди після падіння
-    Destroy(enemy.gameObject, 2f);
+    // Центрування
+    Vector3 targetCenter = new Vector3(transform.position.x, enemyObj.transform.position.y, transform.position.z);
+    enemyObj.transform.position = Vector3.MoveTowards(enemyObj.transform.position, targetCenter, suctionSpeed * Time.deltaTime);
+
+    // Початок падіння (коли ворог зайшов глибше ніж на половину поточного радіусу)
+    if (distance < CurrentRadius * 0.5f)
+    {
+      enemyObj.transform.Translate(Vector3.down * fallSpeed * Time.deltaTime, Space.World);
+
+      // Зменшуємо ворога відносно його початкового розміру
+      enemyObj.transform.localScale = Vector3.Lerp(enemyObj.transform.localScale, Vector3.zero, shrinkSpeed * Time.deltaTime);
+      if (!enemyScript.isConsumed)
+      {
+        playerStats.AddXP(enemyScript.expforEnemy);
+        enemyScript.isConsumed = true;
+        Debug.Log("add ststs");
+      }
+
+
+      if (enemyObj.transform.localScale.x < 0.05f || enemyObj.transform.position.y < transform.position.y - 3f)
+      {
+        Destroy(enemyObj);
+      }
+    }
+  }
+
+  // Для візуального контролю в редакторі
+  private void OnDrawGizmosSelected()
+  {
+    Gizmos.color = Color.yellow;
+    Gizmos.DrawWireSphere(transform.position, CurrentRadius);
   }
 }
