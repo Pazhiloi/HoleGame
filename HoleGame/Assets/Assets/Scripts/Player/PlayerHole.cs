@@ -47,7 +47,7 @@ public class PlayerHole : MonoBehaviour
     Rigidbody rb = enemyObj.GetComponent<Rigidbody>();
     if (rb != null)
     {
-      rb.isKinematic = true;
+      // rb.isKinematic = true;
       rb.velocity = Vector3.zero;
     }
 
@@ -66,7 +66,7 @@ public class PlayerHole : MonoBehaviour
       {
         playerStats.AddXP(enemyScript.expforEnemy);
         enemyScript.isConsumed = true;
-        Debug.Log("add ststs");
+        // Debug.Log("add ststs");
       }
 
 
