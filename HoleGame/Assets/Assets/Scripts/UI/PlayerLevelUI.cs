@@ -9,7 +9,8 @@ public class PlayerLevelUI : MonoBehaviour
 {
   public TMP_Text levelText;
   public TMP_Text hideLevelText;
-  public TMP_Text hidePointText;
+  [SerializeField] private GameObject pointTextPrefab; // Сюди перетягнемо синій кубик
+  [SerializeField] private Transform canvasTransform;
   public Vector3 scaleParams = new Vector3(2f,2f,2f);
   public float scaleDuration = 0.1f;
   public float moveHideTextDistance = 5f;
@@ -22,9 +23,7 @@ public class PlayerLevelUI : MonoBehaviour
   Vector3 pointTextStartPos;
 
   private void Awake() {
-    pointTextStartPos = hidePointText.transform.localPosition;
     hideLevelText.fontSize = 0;
-    hidePointText.gameObject.SetActive(false);
   }
 
 
@@ -65,18 +64,27 @@ public class PlayerLevelUI : MonoBehaviour
 
   public void ShowAndHidePointText(int points)
   {
-    hidePointText.gameObject.SetActive(true);
-    hidePointText.text = "+" + points.ToString();
-    
+    // 1. Створюємо копію тексту
+    GameObject newTextObj = Instantiate(pointTextPrefab, canvasTransform);
 
-    hidePointText.transform.DOLocalMoveY(pointTextStartPos.y + moveHidePointTextDistance, moveHidePointTextDuration)
-       .SetEase(Ease.OutQuad) // Плавне сповільнення в кінці
-       .OnComplete(() =>
-       {
-         // 3. Скидання після завершення
-         hidePointText.transform.localPosition = pointTextStartPos; // Повертаємо в точну початкову точку
-         hidePointText.gameObject.SetActive(false);
-       });
+    // Встановлюємо початкову позицію (можна додати рандомний офсет, щоб вони не перекривали один одного)
+    Vector3 startPos = pointTextStartPos + new Vector3(Random.Range(-20f, 20f), 0, 0);
+    newTextObj.transform.localPosition = startPos;
+
+    TextMeshProUGUI textComp = newTextObj.GetComponent<TextMeshProUGUI>();
+    textComp.text = "+" + points.ToString();
+
+    // 2. Анімація для конкретного створеного об'єкта
+    newTextObj.transform.DOLocalMoveY(startPos.y + moveHidePointTextDistance, moveHidePointTextDuration)
+        .SetEase(Ease.OutQuad)
+        .OnComplete(() =>
+        {
+          // 3. Знищуємо об'єкт, коли анімація закінчилася
+          Destroy(newTextObj);
+        });
+
+    // БОНУС: можна додати зникнення (Fade) через DOTween, щоб було ще гарніше
+    textComp.DOFade(0, moveHidePointTextDuration).SetEase(Ease.InQuad);
   }
 
 }
