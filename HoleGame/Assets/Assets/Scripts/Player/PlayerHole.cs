@@ -67,6 +67,10 @@ public class PlayerHole : MonoBehaviour
         playerStats.AddXP(enemyScript.expforEnemy);
         enemyScript.isConsumed = true;
         // Debug.Log("add ststs");
+        if (enemyScript.isReqForVictory)
+        {
+          VictoryManager.Instance.AnimateEnemyCollection(transform.position);
+        }
       }
 
 
