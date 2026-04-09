@@ -5,38 +5,46 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
+[System.Serializable] // Щоб ми бачили це в інспекторі
+public class VictoryGoal
+{
+  public EnemyType type;         // Тип ворога (Red, Blue...)
+  public GameObject iconPrefab;  // ГОТОВИЙ ПРЕФАБ ІКОНКИ (вже налаштований розмір)
+  public RectTransform targetUI; // Рамка, куди цей ворог має летіти
+  public TMP_Text countText;     // Текст із цифрою для цієї рамки
+  public float remainingCount;   // Скільки ще треба зібрати
+}
+
 public class VictoryManager : MonoBehaviour
 {
   public static VictoryManager Instance { get; private set; }
 
   [Header("UI Елементи")]
-  [SerializeField] private GameObject enemyIconPrefab;
   [SerializeField] private RectTransform canvasRect;
-  [SerializeField] private RectTransform victoryTarget;
-  [SerializeField] private float victoryCount;
-  [SerializeField] private TMP_Text victoryCountText;
 
    [Header("Налаштування польоту")]
   [SerializeField] private float flyDuration = 0.8f;
+  [Header("Цілі перемоги")]
+  [SerializeField] private List<VictoryGoal> victoryGoals; // Список наших цілей
 
   private void Awake()
   {
-    // Реалізація паттерна Сінглтон
     if (Instance != null && Instance != this)
     {
-      Destroy(gameObject); // Видаляємо дублікат, якщо він з'явився
+      Destroy(gameObject); 
     }
     else
     {
       Instance = this;
-      DontDestroyOnLoad(gameObject); // Розкоментуйте, якщо об'єкт має жити при переході між сценами
+      DontDestroyOnLoad(gameObject); 
     }
   }
 
-  public void AnimateEnemyCollection(Vector3 holeWorldPos)
+  public void AnimateEnemyCollection(Vector3 holeWorldPos, EnemyType type)
   {
-    // 1. ПЕРЕКЛАД З 3D В 2D
-    // Отримуємо позицію в пікселях екрана (Screen Space)
+    VictoryGoal goal = victoryGoals.Find(g => g.type == type);
+    // Якщо такий ворог не потрібен для перемоги — нічого не робимо
+    if (goal == null || goal.iconPrefab == null) return;
     Vector2 screenPoint = Camera.main.WorldToScreenPoint(holeWorldPos);
 
     // Перетворюємо пікселі в локальні координати твого Canvas
@@ -47,34 +55,41 @@ public class VictoryManager : MonoBehaviour
         out Vector2 localPoint
     );
 
-    // 2. СТВОРЕННЯ ТА ПОЛІТ
-    GameObject icon = Instantiate(enemyIconPrefab, canvasRect);
+    // 3. Створення іконки
+    GameObject icon = Instantiate(goal.iconPrefab, canvasRect);
+
     RectTransform iconRect = icon.GetComponent<RectTransform>();
+    iconRect.localScale = Vector3.zero;
+    iconRect.DOScale(Vector3.one, 0.2f);
 
-    // Ставимо іконку в центр дірки на екрані
-
-    // Летимо до рамки
-    // victoryTarget.anchoredPosition — це координати твоєї рамки відносно Canvas
-    iconRect.DOLocalMove(victoryTarget.localPosition, flyDuration)
+    iconRect.DOLocalMove(goal.targetUI.localPosition, flyDuration)
         .SetEase(Ease.InQuad)
         .OnComplete(() =>
         {
           // Ефект прильоту: рамка трохи "дригається"
-          victoryTarget.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
+          goal.targetUI.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
           Destroy(icon);
-          victoryCount-=1;
-          victoryCountText.text = victoryCount.ToString();
-
-          if (victoryCount <=0)
+          if (goal.remainingCount > 0)
           {
-            victoryCount = 0;
-            victoryCountText.text = victoryCount.ToString();
-            Debug.Log("Victory!!!");
+            goal.remainingCount--;
+            goal.countText.text = goal.remainingCount.ToString();
+            CheckVictory();
           }
         });
 
     // Додамо трохи обертання для краси
     iconRect.DORotate(new Vector3(0, 0, 360), flyDuration, RotateMode.FastBeyond360);
+  }
+
+  private void CheckVictory()
+  {
+    // Перевіряємо, чи всі цілі виконані (всі лічильники <= 0)
+    bool allGoalsMet = victoryGoals.TrueForAll(g => g.remainingCount <= 0);
+
+    if (allGoalsMet)
+    {
+      Debug.Log("LEVEL COMPLETE! ALL GOALS MET!");
+    }
   }
 
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5143167485096703855}
   - component: {fileID: 2064039229629711466}
   m_Layer: 0
-  m_Name: EnemyObject
+  m_Name: EnemyObject Blue
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5f7a1668a235e99469cfa972e1b6aef8, type: 2}
+  - {fileID: 2100000, guid: 41680a8a3f3dea8438fbc52502b319ae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 0
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!54 &2064039229629711466
 Rigidbody:
   m_ObjectHideFlags: 0

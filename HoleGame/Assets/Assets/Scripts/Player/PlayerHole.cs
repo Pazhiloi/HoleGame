@@ -69,7 +69,7 @@ public class PlayerHole : MonoBehaviour
         // Debug.Log("add ststs");
         if (enemyScript.isReqForVictory)
         {
-          VictoryManager.Instance.AnimateEnemyCollection(transform.position);
+          VictoryManager.Instance.AnimateEnemyCollection(transform.position, enemyScript.enemyType);
         }
       }
 
