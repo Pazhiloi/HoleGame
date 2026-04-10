@@ -38,6 +38,15 @@ public class VictoryManager : MonoBehaviour
       Instance = this;
       DontDestroyOnLoad(gameObject); 
     }
+    foreach (var goal in victoryGoals)
+    {
+      // Перевіряємо, чи ми не забули призначити текст в інспекторі
+      if (goal != null && goal.countText != null)
+      {
+        goal.countText.text = goal.remainingCount.ToString();
+      }
+    }
+
   }
 
   public void AnimateEnemyCollection(Vector3 holeWorldPos, EnemyType type)
