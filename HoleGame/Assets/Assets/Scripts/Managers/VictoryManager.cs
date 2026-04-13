@@ -68,10 +68,11 @@ public class VictoryManager : MonoBehaviour
     GameObject icon = Instantiate(goal.iconPrefab, canvasRect);
 
     RectTransform iconRect = icon.GetComponent<RectTransform>();
+    iconRect.anchoredPosition = localPoint;
     iconRect.localScale = Vector3.zero;
     iconRect.DOScale(Vector3.one, 0.2f);
 
-    iconRect.DOLocalMove(goal.targetUI.localPosition, flyDuration)
+    iconRect.DOAnchorPos(goal.targetUI.anchoredPosition, flyDuration)
         .SetEase(Ease.InQuad)
         .OnComplete(() =>
         {
