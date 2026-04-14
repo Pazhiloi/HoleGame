@@ -11,6 +11,7 @@ public class VictoryGoal
   public EnemyType type;         // Тип ворога (Red, Blue...)
   public GameObject iconPrefab;  // ГОТОВИЙ ПРЕФАБ ІКОНКИ (вже налаштований розмір)
   public RectTransform targetUI; // Рамка, куди цей ворог має летіти
+  public RectTransform targetPanel; // Рамка, куди цей ворог має летіти
   public TMP_Text countText;     // Текст із цифрою для цієї рамки
   public float remainingCount;   // Скільки ще треба зібрати
 }
@@ -52,33 +53,35 @@ public class VictoryManager : MonoBehaviour
   public void AnimateEnemyCollection(Vector3 holeWorldPos, EnemyType type)
   {
     VictoryGoal goal = victoryGoals.Find(g => g.type == type);
-    // Якщо такий ворог не потрібен для перемоги — нічого не робимо
     if (goal == null || goal.iconPrefab == null) return;
-    Vector2 screenPoint = Camera.main.WorldToScreenPoint(holeWorldPos);
 
-    // Перетворюємо пікселі в локальні координати твого Canvas
-    RectTransformUtility.ScreenPointToLocalPointInRectangle(
-        canvasRect,
-        screenPoint,
-        null, // Для Overlay Canvas тут null, для Camera Canvas — Camera.main
-        out Vector2 localPoint
-    );
+    // 1. Початкова точка (позиція дірки)
+    Vector2 screenPoint = Camera.main.WorldToScreenPoint(holeWorldPos);
+    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out Vector2 startLocalPoint);
+
+    // 2. Ключове виправлення: вираховуємо реальну позицію ЦІЛІ відносно Canvas
+    // Отримуємо позицію рамки в екранних координатах
+    Vector2 targetScreenPoint = RectTransformUtility.WorldToScreenPoint(null, goal.targetUI.position);
+    // Перетворюємо її в локальні координати нашого Canvas
+    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, targetScreenPoint, null, out Vector2 targetLocalPoint);
 
     // 3. Створення іконки
     GameObject icon = Instantiate(goal.iconPrefab, canvasRect);
-
     RectTransform iconRect = icon.GetComponent<RectTransform>();
-    iconRect.anchoredPosition = localPoint;
+
+    // Ставимо в точку дірки
+    iconRect.anchoredPosition = startLocalPoint;
     iconRect.localScale = Vector3.zero;
     iconRect.DOScale(Vector3.one, 0.2f);
 
-    iconRect.DOAnchorPos(goal.targetUI.anchoredPosition, flyDuration)
+    // Тепер летимо до targetLocalPoint, а не до anchoredPosition
+    iconRect.DOAnchorPos(targetLocalPoint, flyDuration)
         .SetEase(Ease.InQuad)
         .OnComplete(() =>
         {
-          // Ефект прильоту: рамка трохи "дригається"
-          goal.targetUI.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
+          goal.targetPanel.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
           Destroy(icon);
+
           if (goal.remainingCount > 0)
           {
             goal.remainingCount--;
@@ -87,7 +90,6 @@ public class VictoryManager : MonoBehaviour
           }
         });
 
-    // Додамо трохи обертання для краси
     iconRect.DORotate(new Vector3(0, 0, 360), flyDuration, RotateMode.FastBeyond360);
   }
 

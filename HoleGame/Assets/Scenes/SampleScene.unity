@@ -10160,12 +10160,14 @@ MonoBehaviour:
     iconPrefab: {fileID: 5778246880634310583, guid: 0c3bee895c1429a42a86430c85ca2ba5,
       type: 3}
     targetUI: {fileID: 475909687}
+    targetPanel: {fileID: 423752441}
     countText: {fileID: 993478004}
     remainingCount: 5
   - type: 1
     iconPrefab: {fileID: 5778246880634310583, guid: 00ccb8328794c334097af59e58f6c7b1,
       type: 3}
     targetUI: {fileID: 1744424863}
+    targetPanel: {fileID: 39940260}
     countText: {fileID: 496668576}
     remainingCount: 10
 --- !u!1 &1200977024
