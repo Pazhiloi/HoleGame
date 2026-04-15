@@ -13,7 +13,8 @@ public class VictoryGoal
   public RectTransform targetUI; // Рамка, куди цей ворог має летіти
   public RectTransform targetPanel; // Рамка, куди цей ворог має летіти
   public TMP_Text countText;     // Текст із цифрою для цієї рамки
-  public float remainingCount;   // Скільки ще треба зібрати
+  public float remainingCount; // Скільки ще треба зібрати
+  public GameObject readyIcon;  
 }
 
 public class VictoryManager : MonoBehaviour
@@ -45,6 +46,7 @@ public class VictoryManager : MonoBehaviour
       if (goal != null && goal.countText != null)
       {
         goal.countText.text = goal.remainingCount.ToString();
+        goal.readyIcon.SetActive(false);
       }
     }
 
@@ -79,6 +81,8 @@ public class VictoryManager : MonoBehaviour
         .SetEase(Ease.InQuad)
         .OnComplete(() =>
         {
+          goal.targetPanel.DOKill();
+          goal.targetPanel.localScale = Vector3.one;
           goal.targetPanel.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
           Destroy(icon);
 
@@ -87,6 +91,11 @@ public class VictoryManager : MonoBehaviour
             goal.remainingCount--;
             goal.countText.text = goal.remainingCount.ToString();
             CheckVictory();
+          }
+          else if (goal.remainingCount == 0)
+          {
+            goal.countText.gameObject.SetActive(false);
+            goal.readyIcon.gameObject.SetActive(true);
           }
         });
 
