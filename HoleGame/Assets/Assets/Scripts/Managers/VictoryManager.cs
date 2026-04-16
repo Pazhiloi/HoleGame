@@ -90,13 +90,32 @@ public class VictoryManager : MonoBehaviour
           {
             goal.remainingCount--;
             goal.countText.text = goal.remainingCount.ToString();
+            if (goal.remainingCount <= 0)
+            {
+              goal.countText.gameObject.SetActive(false);
+              goal.readyIcon.SetActive(true);
+
+              // Можна додати маленький ефект появи галочки
+              goal.readyIcon.transform.localScale = Vector3.zero;
+              goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+
+              Sequence finishSequence = DOTween.Sequence();
+
+              finishSequence.AppendInterval(0.3f); // Невелика пауза, щоб гравець побачив галочку
+
+              // 3. Обертання та зменшення одночасно (Join)
+              finishSequence.Append(goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.6f, RotateMode.FastBeyond360));
+              finishSequence.Join(goal.targetPanel.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InBack));
+
+              // 4. Вимикаємо об'єкт після завершення
+              finishSequence.OnComplete(() =>
+              {
+                goal.targetPanel.gameObject.SetActive(false);
+              });
+            }
             CheckVictory();
           }
-          else if (goal.remainingCount == 0)
-          {
-            goal.countText.gameObject.SetActive(false);
-            goal.readyIcon.gameObject.SetActive(true);
-          }
+          
         });
 
     iconRect.DORotate(new Vector3(0, 0, 360), flyDuration, RotateMode.FastBeyond360);
