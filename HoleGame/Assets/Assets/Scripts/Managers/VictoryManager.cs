@@ -55,28 +55,29 @@ public class VictoryManager : MonoBehaviour
   public void AnimateEnemyCollection(Vector3 holeWorldPos, EnemyType type)
   {
     VictoryGoal goal = victoryGoals.Find(g => g.type == type);
-    if (goal == null || goal.iconPrefab == null) return;
 
-    // 1. Початкова точка (позиція дірки)
+    // 1. ГОЛОВНА ПЕРЕВІРКА: Якщо ціль уже виконана (0 або менше), 
+    // або рамка вже зникла — просто виходимо і нічого не спавнимо.
+    if (goal == null || goal.iconPrefab == null || goal.remainingCount <= 0) return;
+
+    // 2. МИТТЄВО зменшуємо лічильник. 
+    // Наступний ворог, який викличе цей метод через мілісекунду, побачить уже менше число.
+    goal.remainingCount--;
+
+    // Далі твій стандартний код розрахунку позицій...
     Vector2 screenPoint = Camera.main.WorldToScreenPoint(holeWorldPos);
     RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out Vector2 startLocalPoint);
 
-    // 2. Ключове виправлення: вираховуємо реальну позицію ЦІЛІ відносно Canvas
-    // Отримуємо позицію рамки в екранних координатах
     Vector2 targetScreenPoint = RectTransformUtility.WorldToScreenPoint(null, goal.targetUI.position);
-    // Перетворюємо її в локальні координати нашого Canvas
     RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, targetScreenPoint, null, out Vector2 targetLocalPoint);
 
-    // 3. Створення іконки
     GameObject icon = Instantiate(goal.iconPrefab, canvasRect);
     RectTransform iconRect = icon.GetComponent<RectTransform>();
 
-    // Ставимо в точку дірки
     iconRect.anchoredPosition = startLocalPoint;
     iconRect.localScale = Vector3.zero;
     iconRect.DOScale(Vector3.one, 0.2f);
 
-    // Тепер летимо до targetLocalPoint, а не до anchoredPosition
     iconRect.DOAnchorPos(targetLocalPoint, flyDuration)
         .SetEase(Ease.InQuad)
         .OnComplete(() =>
@@ -86,36 +87,41 @@ public class VictoryManager : MonoBehaviour
           goal.targetPanel.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
           Destroy(icon);
 
-          if (goal.remainingCount > 0)
+          // 3. ОНОВЛЮЄМО ТЕКСТ. 
+          // Тут ми вже не віднімаємо одиницю (ми це зробили на старті), 
+          // а просто показуємо поточне значення.
+          goal.countText.text = goal.remainingCount.ToString();
+
+          // 4. ПЕРЕВІРКА НА ФІНАЛ. 
+          // Якщо після прильоту іконки лічильник став 0 — запускаємо твою круту анімацію.
+          if (goal.remainingCount <= 0)
           {
-            goal.remainingCount--;
-            goal.countText.text = goal.remainingCount.ToString();
-            if (goal.remainingCount <= 0)
+            goal.countText.gameObject.SetActive(false);
+            goal.readyIcon.SetActive(true);
+
+            goal.readyIcon.transform.localScale = Vector3.zero;
+            goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+
+            LayoutElement layoutElement = goal.targetPanel.GetComponent<LayoutElement>();
+            Sequence finishSequence = DOTween.Sequence();
+
+            finishSequence.AppendInterval(0.3f);
+            finishSequence.Append(goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.6f, RotateMode.FastBeyond360));
+            finishSequence.Join(goal.targetPanel.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InBack));
+
+            if (layoutElement != null)
             {
-              goal.countText.gameObject.SetActive(false);
-              goal.readyIcon.SetActive(true);
-
-              // Можна додати маленький ефект появи галочки
-              goal.readyIcon.transform.localScale = Vector3.zero;
-              goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
-
-              Sequence finishSequence = DOTween.Sequence();
-
-              finishSequence.AppendInterval(0.3f); // Невелика пауза, щоб гравець побачив галочку
-
-              // 3. Обертання та зменшення одночасно (Join)
-              finishSequence.Append(goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.6f, RotateMode.FastBeyond360));
-              finishSequence.Join(goal.targetPanel.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InBack));
-
-              // 4. Вимикаємо об'єкт після завершення
-              finishSequence.OnComplete(() =>
-              {
-                goal.targetPanel.gameObject.SetActive(false);
-              });
+              finishSequence.Join(DOTween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, 0, 1f));
             }
-            CheckVictory();
+
+            finishSequence.OnComplete(() =>
+            {
+              goal.targetPanel.gameObject.SetActive(false);
+            });
           }
-          
+
+          // Важливо викликати перевірку перемоги тут
+          CheckVictory();
         });
 
     iconRect.DORotate(new Vector3(0, 0, 360), flyDuration, RotateMode.FastBeyond360);
