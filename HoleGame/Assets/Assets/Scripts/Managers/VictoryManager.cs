@@ -14,7 +14,8 @@ public class VictoryGoal
   public RectTransform targetPanel; // Рамка, куди цей ворог має летіти
   public TMP_Text countText;     // Текст із цифрою для цієї рамки
   public float remainingCount; // Скільки ще треба зібрати
-  public GameObject readyIcon;  
+  public GameObject readyIcon;
+  public ParticleSystem collectVFX;
 }
 
 public class VictoryManager : MonoBehaviour
@@ -28,6 +29,8 @@ public class VictoryManager : MonoBehaviour
   [SerializeField] private float flyDuration = 0.8f;
   [Header("Цілі перемоги")]
   [SerializeField] private List<VictoryGoal> victoryGoals; // Список наших цілей
+  [Header("Камери")]
+  [SerializeField] private Camera mainCamera;
 
   private void Awake()
   {
@@ -65,7 +68,7 @@ public class VictoryManager : MonoBehaviour
     goal.remainingCount--;
 
     // Далі твій стандартний код розрахунку позицій...
-    Vector2 screenPoint = Camera.main.WorldToScreenPoint(holeWorldPos);
+    Vector2 screenPoint = mainCamera.WorldToScreenPoint(holeWorldPos);
     RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out Vector2 startLocalPoint);
 
     Vector2 targetScreenPoint = RectTransformUtility.WorldToScreenPoint(null, goal.targetUI.position);
@@ -82,6 +85,13 @@ public class VictoryManager : MonoBehaviour
         .SetEase(Ease.InQuad)
         .OnComplete(() =>
         {
+          // ЗАПУСК ЕФЕКТУ БЛИСКІТОК
+          if (goal.collectVFX != null)
+          {
+            // .Stop() потрібен, щоб скинути попередній запуск, якщо іконки летять дуже швидко
+            goal.collectVFX.Stop();
+            goal.collectVFX.Play();
+          }
           goal.targetPanel.DOKill();
           goal.targetPanel.localScale = Vector3.one;
           goal.targetPanel.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
