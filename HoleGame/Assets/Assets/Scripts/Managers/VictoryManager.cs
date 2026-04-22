@@ -29,8 +29,6 @@ public class VictoryManager : MonoBehaviour
   [SerializeField] private float flyDuration = 0.8f;
   [Header("Цілі перемоги")]
   [SerializeField] private List<VictoryGoal> victoryGoals; // Список наших цілей
-  [Header("Камери")]
-  [SerializeField] private Camera mainCamera;
 
   private void Awake()
   {
@@ -68,7 +66,7 @@ public class VictoryManager : MonoBehaviour
     goal.remainingCount--;
 
     // Далі твій стандартний код розрахунку позицій...
-    Vector2 screenPoint = mainCamera.WorldToScreenPoint(holeWorldPos);
+    Vector2 screenPoint = Camera.main.WorldToScreenPoint(holeWorldPos);
     RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out Vector2 startLocalPoint);
 
     Vector2 targetScreenPoint = RectTransformUtility.WorldToScreenPoint(null, goal.targetUI.position);
