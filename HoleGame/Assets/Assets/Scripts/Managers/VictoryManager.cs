@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 [System.Serializable] // Щоб ми бачили це в інспекторі
 public class VictoryGoal
@@ -16,6 +16,7 @@ public class VictoryGoal
   public float remainingCount; // Скільки ще треба зібрати
   public GameObject readyIcon;
   public ParticleSystem collectVFX;
+  public GameObject backSide;// Твоя порожня рамка (спина)
 }
 
 public class VictoryManager : MonoBehaviour
@@ -48,6 +49,7 @@ public class VictoryManager : MonoBehaviour
       {
         goal.countText.text = goal.remainingCount.ToString();
         goal.readyIcon.SetActive(false);
+        if (goal.backSide != null) goal.backSide.SetActive(false);
       }
     }
 
@@ -104,36 +106,9 @@ public class VictoryManager : MonoBehaviour
           // Якщо після прильоту іконки лічильник став 0 — запускаємо твою круту анімацію.
           if (goal.remainingCount <= 0)
           {
-            goal.countText.gameObject.SetActive(false);
-            goal.readyIcon.SetActive(true);
 
-            goal.readyIcon.transform.localScale = Vector3.zero;
-            goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
-
-            LayoutElement layoutElement = goal.targetPanel.GetComponent<LayoutElement>();
-            goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.6f, RotateMode.Fast)
-        .SetEase(Ease.Linear)
-        .OnComplete(() =>
-        {
-          // // КРОК 3: Зменшення масштабу та ширини (останній етап)
-          // goal.targetPanel.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InBack);
-
-          // if (layoutElement != null)
-          // {
-          //   DOTween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, 0, 0.5f)
-          //         .OnComplete(() =>
-          //         {
-          //           // ФІНАЛ: Вимикаємо об'єкт
-          //           goal.targetPanel.gameObject.SetActive(false);
-          //           CheckVictory();
-          //         });
-          // }
-          // else
-          // {
-          //   // Якщо LayoutElement немає, просто вимикаємо після Scale
-          //   DOVirtual.DelayedCall(0.4f, () => goal.targetPanel.gameObject.SetActive(false));
-          // }
-        });
+            StartFinalAnimation(goal);
+           
           }
 
           // Важливо викликати перевірку перемоги тут
@@ -142,6 +117,25 @@ public class VictoryManager : MonoBehaviour
 
     iconRect.DORotate(new Vector3(0, 0, 360), flyDuration, RotateMode.FastBeyond360);
   }
+
+  private void StartFinalAnimation(VictoryGoal goal)
+    {
+       goal.countText.gameObject.SetActive(false);
+        goal.readyIcon.SetActive(true);
+        if (goal.backSide != null) goal.backSide.SetActive(false);
+
+        goal.readyIcon.transform.localScale = Vector3.zero;
+            goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+
+        LayoutElement layoutElement = goal.targetPanel.GetComponent<LayoutElement>();
+        Sequence finishSequence = DOTween.Sequence();
+        goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.6f, RotateMode.Fast)
+        .SetEase(Ease.Linear)
+        .OnComplete(() =>
+        {
+
+        });
+    }
 
   private void CheckVictory()
   {
