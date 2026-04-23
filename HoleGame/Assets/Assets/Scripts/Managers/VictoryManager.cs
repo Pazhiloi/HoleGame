@@ -25,7 +25,7 @@ public class VictoryManager : MonoBehaviour
   [Header("UI Елементи")]
   [SerializeField] private RectTransform canvasRect;
 
-   [Header("Налаштування польоту")]
+  [Header("Налаштування польоту")]
   [SerializeField] private float flyDuration = 0.8f;
   [Header("Цілі перемоги")]
   [SerializeField] private List<VictoryGoal> victoryGoals; // Список наших цілей
@@ -34,12 +34,12 @@ public class VictoryManager : MonoBehaviour
   {
     if (Instance != null && Instance != this)
     {
-      Destroy(gameObject); 
+      Destroy(gameObject);
     }
     else
     {
       Instance = this;
-      DontDestroyOnLoad(gameObject); 
+      DontDestroyOnLoad(gameObject);
     }
     foreach (var goal in victoryGoals)
     {
@@ -111,21 +111,29 @@ public class VictoryManager : MonoBehaviour
             goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
 
             LayoutElement layoutElement = goal.targetPanel.GetComponent<LayoutElement>();
-            Sequence finishSequence = DOTween.Sequence();
+            goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.6f, RotateMode.Fast)
+        .SetEase(Ease.Linear)
+        .OnComplete(() =>
+        {
+          // // КРОК 3: Зменшення масштабу та ширини (останній етап)
+          // goal.targetPanel.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InBack);
 
-            finishSequence.AppendInterval(0.3f);
-            finishSequence.Append(goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.6f, RotateMode.FastBeyond360));
-            finishSequence.Join(goal.targetPanel.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InBack));
-
-            if (layoutElement != null)
-            {
-              finishSequence.Join(DOTween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, 0, 1f));
-            }
-
-            finishSequence.OnComplete(() =>
-            {
-              goal.targetPanel.gameObject.SetActive(false);
-            });
+          // if (layoutElement != null)
+          // {
+          //   DOTween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, 0, 0.5f)
+          //         .OnComplete(() =>
+          //         {
+          //           // ФІНАЛ: Вимикаємо об'єкт
+          //           goal.targetPanel.gameObject.SetActive(false);
+          //           CheckVictory();
+          //         });
+          // }
+          // else
+          // {
+          //   // Якщо LayoutElement немає, просто вимикаємо після Scale
+          //   DOVirtual.DelayedCall(0.4f, () => goal.targetPanel.gameObject.SetActive(false));
+          // }
+        });
           }
 
           // Важливо викликати перевірку перемоги тут

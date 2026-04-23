@@ -2656,7 +2656,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423752440}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15249,7 +15249,7 @@ MonoBehaviour:
     targetUI: {fileID: 475909687}
     targetPanel: {fileID: 423752441}
     countText: {fileID: 993478004}
-    remainingCount: 10
+    remainingCount: 1
     readyIcon: {fileID: 1564727436}
     collectVFX: {fileID: 775072588}
   - type: 1
@@ -15258,7 +15258,7 @@ MonoBehaviour:
     targetUI: {fileID: 1744424863}
     targetPanel: {fileID: 39940260}
     countText: {fileID: 496668576}
-    remainingCount: 10
+    remainingCount: 1
     readyIcon: {fileID: 73391497}
     collectVFX: {fileID: 1956267249}
 --- !u!1 &1200977024
