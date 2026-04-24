@@ -3177,7 +3177,7 @@ GameObject:
   - component: {fileID: 542094034}
   - component: {fileID: 542094033}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Icon Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15403,8 +15403,10 @@ MonoBehaviour:
     countText: {fileID: 993478004}
     remainingCount: 1
     readyIcon: {fileID: 1564727436}
+    iconPanel: {fileID: 1231336858}
     collectVFX: {fileID: 775072588}
     backSide: {fileID: 1025700841}
+    isFinishing: 0
   - type: 1
     iconPrefab: {fileID: 5778246880634310583, guid: 00ccb8328794c334097af59e58f6c7b1,
       type: 3}
@@ -15413,8 +15415,10 @@ MonoBehaviour:
     countText: {fileID: 496668576}
     remainingCount: 1
     readyIcon: {fileID: 73391497}
+    iconPanel: {fileID: 542094031}
     collectVFX: {fileID: 1956267249}
     backSide: {fileID: 194823646}
+    isFinishing: 0
 --- !u!1 &1200977024
 GameObject:
   m_ObjectHideFlags: 0
@@ -15810,7 +15814,7 @@ GameObject:
   - component: {fileID: 1231336861}
   - component: {fileID: 1231336860}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Icon Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
