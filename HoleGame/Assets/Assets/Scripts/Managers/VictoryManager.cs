@@ -30,10 +30,19 @@ public class VictoryManager : MonoBehaviour
 
   [Header("Налаштування польоту")]
   [SerializeField] private float flyDuration = 0.8f;
+
   [Header("Цілі перемоги")]
-  [SerializeField] private List<VictoryGoal> victoryGoals; // Список наших цілей
+  [SerializeField] private List<VictoryGoal> victoryGoals;
 
   private void Awake()
+  {
+    InitializeSingleton();
+    InitializeGoals();
+  }
+
+  // --- МЕТОДИ ІНІЦІАЛІЗАЦІЇ ---
+
+  private void InitializeSingleton()
   {
     if (Instance != null && Instance != this)
     {
@@ -44,170 +53,189 @@ public class VictoryManager : MonoBehaviour
       Instance = this;
       DontDestroyOnLoad(gameObject);
     }
+  }
+
+  private void InitializeGoals()
+  {
     foreach (var goal in victoryGoals)
     {
-      // Перевіряємо, чи ми не забули призначити текст в інспекторі
-      if (goal != null && goal.countText != null)
+      if (goal?.countText != null)
       {
         goal.countText.text = goal.remainingCount.ToString();
         goal.readyIcon.SetActive(false);
-        if (goal.backSide != null) goal.backSide.SetActive(false);
+        goal.backSide?.SetActive(false);
       }
     }
-
   }
+
+  // --- ГОЛОВНА ЛОГІКА ЗБОРУ ---
 
   public void AnimateEnemyCollection(Vector3 holeWorldPos, EnemyType type)
   {
     VictoryGoal goal = victoryGoals.Find(g => g.type == type);
 
-    // 1. ГОЛОВНА ПЕРЕВІРКА: Якщо ціль уже виконана (0 або менше), 
-    // або рамка вже зникла — просто виходимо і нічого не спавнимо.
-    if (goal == null || goal.iconPrefab == null || goal.remainingCount <= 0) return;
+    if (!CanCollect(goal)) return;
 
-    // 2. МИТТЄВО зменшуємо лічильник. 
-    // Наступний ворог, який викличе цей метод через мілісекунду, побачить уже менше число.
     goal.remainingCount--;
 
-    // Далі твій стандартний код розрахунку позицій...
-    Vector2 screenPoint = Camera.main.WorldToScreenPoint(holeWorldPos);
-    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out Vector2 startLocalPoint);
+    // Розрахунок позицій
+    Vector2 startPos = CalculateStartScreenPos(holeWorldPos);
+    Vector2 targetPos = CalculateTargetScreenPos(goal.targetUI);
 
-    Vector2 targetScreenPoint = RectTransformUtility.WorldToScreenPoint(null, goal.targetUI.position);
-    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, targetScreenPoint, null, out Vector2 targetLocalPoint);
+    // Створення та запуск польоту іконки
+    CreateFlyingIcon(goal, startPos, targetPos);
+  }
 
+  private bool CanCollect(VictoryGoal goal)
+  {
+    return goal != null && goal.iconPrefab != null && goal.remainingCount > 0;
+  }
+
+  // --- МАТЕМАТИКА КООРДИНАТ ---
+
+  private Vector2 CalculateStartScreenPos(Vector3 worldPos)
+  {
+    Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPos);
+    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out Vector2 localPoint);
+    return localPoint;
+  }
+
+  private Vector2 CalculateTargetScreenPos(RectTransform targetUI)
+  {
+    Vector2 targetScreenPoint = RectTransformUtility.WorldToScreenPoint(null, targetUI.position);
+    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, targetScreenPoint, null, out Vector2 localPoint);
+    return localPoint;
+  }
+
+  // --- КЕРУВАННЯ АНІМАЦІЯМИ ІКОНОК ---
+
+  private void CreateFlyingIcon(VictoryGoal goal, Vector2 startPos, Vector2 targetPos)
+  {
     GameObject icon = Instantiate(goal.iconPrefab, canvasRect);
     RectTransform iconRect = icon.GetComponent<RectTransform>();
 
-    iconRect.anchoredPosition = startLocalPoint;
+    iconRect.anchoredPosition = startPos;
     iconRect.localScale = Vector3.zero;
+
+    // Початковий "виліт"
     iconRect.DOScale(Vector3.one, 0.2f);
 
-    iconRect.DOAnchorPos(targetLocalPoint, flyDuration)
-        .SetEase(Ease.InQuad)
-        .OnComplete(() =>
-        {
-          // ЗАПУСК ЕФЕКТУ БЛИСКІТОК
-          if (goal.collectVFX != null)
-          {
-            // .Stop() потрібен, щоб скинути попередній запуск, якщо іконки летять дуже швидко
-            goal.collectVFX.Stop();
-            goal.collectVFX.Play();
-          }
-          goal.targetPanel.DOKill();
-          goal.targetPanel.localScale = Vector3.one;
-          goal.targetPanel.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
-          Destroy(icon);
+    // Політ до цілі
+    iconRect.DOAnchorPos(targetPos, flyDuration).SetEase(Ease.InQuad)
+        .OnComplete(() => OnIconReachedTarget(icon, goal));
 
-          // 3. ОНОВЛЮЄМО ТЕКСТ. 
-          // Тут ми вже не віднімаємо одиницю (ми це зробили на старті), 
-          // а просто показуємо поточне значення.
-          goal.countText.text = goal.remainingCount.ToString();
-
-          // 4. ПЕРЕВІРКА НА ФІНАЛ. 
-          // Якщо після прильоту іконки лічильник став 0 — запускаємо твою круту анімацію.
-          if (goal.remainingCount <= 0)
-          {
-
-            StartFinalAnimation(goal);
-           
-          }
-
-          // Важливо викликати перевірку перемоги тут
-          CheckVictory();
-        });
-
+    // Обертання в польоті
     iconRect.DORotate(new Vector3(0, 0, 360), flyDuration, RotateMode.FastBeyond360);
   }
 
-  private void StartFinalAnimation(VictoryGoal goal)
+  private void OnIconReachedTarget(GameObject icon, VictoryGoal goal)
+  {
+    PlayCollectEffects(goal);
+    Destroy(icon);
+
+    goal.countText.text = goal.remainingCount.ToString();
+
+    if (goal.remainingCount <= 0)
     {
-    goal.isFinishing =false;
-       goal.countText.gameObject.SetActive(false);
-        goal.readyIcon.SetActive(true);
-        if (goal.backSide != null) goal.backSide.SetActive(false);
+      StartFinalAnimation(goal);
+    }
 
-        goal.readyIcon.transform.localScale = Vector3.zero;
-            goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+    CheckVictory();
+  }
 
-        LayoutElement layoutElement = goal.targetPanel.GetComponent<LayoutElement>();
-        Sequence finishSequence = DOTween.Sequence();
+  private void PlayCollectEffects(VictoryGoal goal)
+  {
+    if (goal.collectVFX != null)
+    {
+      goal.collectVFX.Stop();
+      goal.collectVFX.Play();
+    }
 
-    finishSequence.Append(goal.targetPanel.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360)
-        .SetRelative(true)
-        .SetEase(Ease.Linear)
-        .OnUpdate(() => UpdateCardVisibility(goal)));
+    goal.targetPanel.DOKill();
+    goal.targetPanel.localScale = Vector3.one;
+    goal.targetPanel.DOPunchScale(new Vector3(0.15f, 0.15f, 0.15f), 0.2f);
+  }
 
-    // 2. ПАУЗА (невелика затримка для стабілізації)
+  // --- ФІНАЛЬНІ АНІМАЦІЇ КАРТКИ ---
+
+  private void StartFinalAnimation(VictoryGoal goal)
+  {
+    SetupFinalAnimationState(goal);
+
+    Sequence finishSequence = DOTween.Sequence();
+    LayoutElement layout = goal.targetPanel.GetComponent<LayoutElement>();
+
+    // 1. Повне обертання
+    finishSequence.Append(CreateRotationTween(goal, 360, Ease.Linear));
     finishSequence.AppendInterval(0.1f);
 
-    // 3. РОЗВОРОТ СПИНОЮ (180 градусів)
-    finishSequence.Append(goal.targetPanel.DORotate(new Vector3(0, 180, 0), 0.3f, RotateMode.FastBeyond360)
-        .SetRelative(true)
-        .SetEase(Ease.OutQuad)
-        .OnUpdate(() => UpdateCardVisibility(goal)));
+    // 2. Розмивання спиною
+    finishSequence.Append(CreateRotationTween(goal, 180, Ease.OutQuad));
 
-    finishSequence.AppendCallback(() =>
-    {
-      goal.isFinishing = true;
-      // Вимикаємо іконку ворога, бо панель вже стоїть до нас спиною
-      goal.readyIcon.SetActive(false);
-      goal.iconPanel.SetActive(false);
-      goal.targetUI.gameObject.SetActive(false);
+    // 3. Колбек для приховування нутрощів
+    finishSequence.AppendCallback(() => FinalizeCardVisuals(goal));
 
-      // Якщо є ще якісь елементи на лицьовій стороні, які "світяться" — їх теж тут
-      if (goal.countText != null) goal.countText.gameObject.SetActive(false);
-    });
-
-    // 4. ЗМЕНШЕННЯ (Scale до 0)
+    // 4. Зникнення
     finishSequence.Append(goal.targetPanel.DOScale(Vector3.zero, 0.1f).SetEase(Ease.InBack));
 
-    // 5. ЗВУЖЕННЯ (Preferred Width до 0)
-    if (layoutElement != null)
-    {
-      finishSequence.Join(DOTween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, 0, 0.1f));
-    }
+    if (layout != null)
+      finishSequence.Join(DOTween.To(() => layout.preferredWidth, x => layout.preferredWidth = x, 0, 0.1f));
 
     finishSequence.OnComplete(() =>
     {
       goal.targetPanel.gameObject.SetActive(false);
       CheckVictory();
     });
+  }
 
+  private void SetupFinalAnimationState(VictoryGoal goal)
+  {
+    goal.isFinishing = false;
+    goal.countText.gameObject.SetActive(false);
+    goal.readyIcon.SetActive(true);
+    goal.backSide?.SetActive(false);
+    goal.readyIcon.transform.localScale = Vector3.zero;
+    goal.readyIcon.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+  }
+
+  private Tween CreateRotationTween(VictoryGoal goal, float angle, Ease ease)
+  {
+    return goal.targetPanel.DORotate(new Vector3(0, angle, 0), 0.3f, RotateMode.FastBeyond360)
+        .SetRelative(true)
+        .SetEase(ease)
+        .OnUpdate(() => UpdateCardVisibility(goal));
+  }
+
+  private void FinalizeCardVisuals(VictoryGoal goal)
+  {
+    goal.isFinishing = true;
+    goal.readyIcon.SetActive(false);
+    goal.iconPanel.SetActive(false);
+    goal.targetUI.gameObject.SetActive(false);
+    goal.countText.gameObject.SetActive(false);
   }
 
   private void UpdateCardVisibility(VictoryGoal goal)
   {
-    if (goal.isFinishing)return;
-    // Отримуємо поточний кут Y в межах 0-360
-    float yAngle = goal.targetPanel.localEulerAngles.y;
+    if (goal.isFinishing) return;
 
-    // Нормалізуємо кут (щоб уникнути багів Unity з від'ємними значеннями)
-    float normalizedY = yAngle % 360;
+    float normalizedY = goal.targetPanel.localEulerAngles.y % 360;
     if (normalizedY < 0) normalizedY += 360;
 
-    // Твоя ідея: якщо кут між 90 і 270 — показуємо спину
     bool isBackVisible = normalizedY > 90 && normalizedY < 270;
 
-    if (goal.readyIcon.activeSelf == isBackVisible) // Вмикаємо Front, якщо !isBackVisible
-    {
+    if (goal.readyIcon.activeSelf == isBackVisible)
       goal.readyIcon.SetActive(!isBackVisible);
-    }
 
     if (goal.backSide != null && goal.backSide.activeSelf != isBackVisible)
-    {
       goal.backSide.SetActive(isBackVisible);
-    }
   }
 
   private void CheckVictory()
   {
-    // Перевіряємо, чи всі цілі виконані (всі лічильники <= 0)
-    bool allGoalsMet = victoryGoals.TrueForAll(g => g.remainingCount <= 0);
-
-    if (allGoalsMet)
+    if (victoryGoals.TrueForAll(g => g.remainingCount <= 0))
     {
-      Debug.Log("LEVEL COMPLETE! ALL GOALS MET!");
+      Debug.Log("LEVEL COMPLETE!");
     }
   }
 
