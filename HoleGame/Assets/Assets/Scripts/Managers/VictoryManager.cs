@@ -33,6 +33,7 @@ public class VictoryManager : MonoBehaviour
 
   [Header("Цілі перемоги")]
   [SerializeField] private List<VictoryGoal> victoryGoals;
+  [SerializeField] private VictoryUI victoryUIScript;
 
   private void Awake()
   {
@@ -233,9 +234,10 @@ public class VictoryManager : MonoBehaviour
 
   private void CheckVictory()
   {
-    if (victoryGoals.TrueForAll(g => g.remainingCount <= 0))
+    bool allGoalsMet = victoryGoals.TrueForAll(g => g.remainingCount <= 0);
+    if (allGoalsMet)
     {
-      Debug.Log("LEVEL COMPLETE!");
+      victoryUIScript.ShowVictoryScreen();
     }
   }
 
