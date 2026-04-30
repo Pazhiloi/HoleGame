@@ -8,6 +8,10 @@ public class VictoryUI : MonoBehaviour
   [SerializeField] private GameObject victoryPanel;
   [SerializeField] private CanvasGroup canvasGroup; // Додай CanvasGroup на VictoryPanel для плавного проявлення
   [SerializeField] private RectTransform victoryText;
+  [Header("Зірки")]
+  [SerializeField] private List<Image> starImages; // Сюди перетягни 3 картинки зірок
+  [SerializeField] private Sprite fullStarSprite;  // Спрайт золотої зірки
+  [SerializeField] private Sprite emptyStarSprite; // Спрайт порожньої зірки
   [Header("Ефекти салюту")]
   [SerializeField] private List<ParticleSystem> fireworks;
 
@@ -18,7 +22,7 @@ public class VictoryUI : MonoBehaviour
     if (canvasGroup != null) canvasGroup.alpha = 0;
   }
 
-  public void ShowVictoryScreen()
+  public void ShowVictoryScreen(int starsEarned)
   {
     victoryPanel.SetActive(true);
 
@@ -33,7 +37,33 @@ public class VictoryUI : MonoBehaviour
                 {
                     // Цей код виконається ТІЛЬКИ після завершення анімації тексту
                     LaunchFireworks();
+                    AnimateStars(starsEarned);
                 });;
+    }
+  }
+
+  private void AnimateStars(int starsEarned)
+  {
+    Sequence starSequence = DOTween.Sequence();
+
+    for (int i = 0; i < starsEarned; i++)
+    {
+      int index = i;
+
+      // 1. Готуємо зірку: робимо її невидимою (scale = 0) перед тим як показати золоту
+      starSequence.AppendCallback(() =>
+      {
+        starImages[index].rectTransform.localScale = Vector3.zero; // Зменшуємо в нуль
+        starImages[index].sprite = fullStarSprite;                // Міняємо спрайт
+      });
+
+      // 2. Анімація появи: збільшуємо трохи більше одиниці і повертаємо в норму
+      // Це створить ефект "вистрибування" без зайвого дрижання
+      starSequence.Append(starImages[index].rectTransform.DOScale(1.2f, 0.2f).SetEase(Ease.OutQuad));
+      starSequence.Append(starImages[index].rectTransform.DOScale(1.0f, 0.1f).SetEase(Ease.InQuad));
+
+      // Маленька пауза перед наступною зіркою
+      starSequence.AppendInterval(0.15f);
     }
   }
 
