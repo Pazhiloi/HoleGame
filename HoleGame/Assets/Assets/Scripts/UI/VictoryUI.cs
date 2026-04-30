@@ -14,6 +14,7 @@ public class VictoryUI : MonoBehaviour
   [SerializeField] private Sprite emptyStarSprite; // Спрайт порожньої зірки
   [Header("Ефекти салюту")]
   [SerializeField] private List<ParticleSystem> fireworks;
+  private bool isAnimationPlaying = false; // Запобіжник
 
   private void Awake()
   {
@@ -24,6 +25,10 @@ public class VictoryUI : MonoBehaviour
 
   public void ShowVictoryScreen(int starsEarned)
   {
+    if (isAnimationPlaying) return;
+    isAnimationPlaying = true;
+   
+
     victoryPanel.SetActive(true);
 
     // Плавна поява фону
@@ -33,17 +38,29 @@ public class VictoryUI : MonoBehaviour
     if (victoryText != null)
     {
       victoryText.localScale = Vector3.zero;
-      victoryText.DOScale(Vector3.one, 0.8f).SetEase(Ease.OutBack).OnComplete(() => 
+      victoryText.DOScale(Vector3.one, 1.6f).SetEase(Ease.OutBack).OnComplete(() => 
                 {
+                  victoryText.DOScale(Vector3.zero, 1.6f).OnComplete(() =>
+                  {
+                     victoryText.gameObject.SetActive(false);
+                    foreach (var star in starImages)
+                    {
+                      star.sprite = emptyStarSprite;
+                      star.rectTransform.localScale = Vector3.one; // Повертаємо нормальний масштаб для сірих
+                    }
+
                     // Цей код виконається ТІЛЬКИ після завершення анімації тексту
                     LaunchFireworks();
                     AnimateStars(starsEarned);
-                });;
+                  });
+                 
+                });
     }
   }
 
   private void AnimateStars(int starsEarned)
   {
+    foreach (var star in starImages) star.rectTransform.DOKill();
     Sequence starSequence = DOTween.Sequence();
 
     for (int i = 0; i < starsEarned; i++)
@@ -59,12 +76,16 @@ public class VictoryUI : MonoBehaviour
 
       // 2. Анімація появи: збільшуємо трохи більше одиниці і повертаємо в норму
       // Це створить ефект "вистрибування" без зайвого дрижання
-      starSequence.Append(starImages[index].rectTransform.DOScale(1.2f, 0.2f).SetEase(Ease.OutQuad));
-      starSequence.Append(starImages[index].rectTransform.DOScale(1.0f, 0.1f).SetEase(Ease.InQuad));
+      starSequence.Append(starImages[index].rectTransform
+             .DOScale(Vector3.one, 0.4f)
+             .SetEase(Ease.OutBack));
 
       // Маленька пауза перед наступною зіркою
       starSequence.AppendInterval(0.15f);
     }
+    // В кінці всієї послідовності дозволяємо запуск знову (хоча панель уже буде закрита)
+    starSequence.OnComplete(() => isAnimationPlaying = false);
+
   }
 
   private void LaunchFireworks()
