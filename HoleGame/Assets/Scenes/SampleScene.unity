@@ -26197,6 +26197,7 @@ MonoBehaviour:
     backSide: {fileID: 194823646}
     isFinishing: 0
   victoryUIScript: {fileID: 1548731960}
+  timerScript: {fileID: 1673310295}
 --- !u!1 &1156866582
 GameObject:
   m_ObjectHideFlags: 0
@@ -34702,8 +34703,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 1673310296}
-  remainingTime: 10
+  initialTime: 60
   timerSlider: {fileID: 561462182}
+  remainingForThreeStars: 30
+  remainingForTwoStars: 10
 --- !u!114 &1673310296
 MonoBehaviour:
   m_ObjectHideFlags: 0

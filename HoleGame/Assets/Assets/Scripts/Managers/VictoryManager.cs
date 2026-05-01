@@ -34,6 +34,7 @@ public class VictoryManager : MonoBehaviour
   [Header("Цілі перемоги")]
   [SerializeField] private List<VictoryGoal> victoryGoals;
   [SerializeField] private VictoryUI victoryUIScript;
+  [SerializeField] private Timer timerScript;
 
   private void Awake()
   {
@@ -237,15 +238,14 @@ public class VictoryManager : MonoBehaviour
     bool allGoalsMet = victoryGoals.TrueForAll(g => g.remainingCount <= 0);
     if (allGoalsMet)
     {
+      timerScript.StopTimer();
       int stars = CalculateStars(); 
       victoryUIScript.ShowVictoryScreen(stars);
     }
   }
   private int CalculateStars()
   {
-    // Приклад простої логіки:
-    // 3 зірки — завжди, якщо пройшов (або додай умови за часом/HP)
-    return 2; // Тимчасово повертаємо 2 для тесту
+    return timerScript.GetStarsResult();
   }
 
 }

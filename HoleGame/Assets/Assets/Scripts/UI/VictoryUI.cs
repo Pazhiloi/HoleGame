@@ -21,6 +21,7 @@ public class VictoryUI : MonoBehaviour
     // Ховаємо панель на старті
     victoryPanel.SetActive(false);
     if (canvasGroup != null) canvasGroup.alpha = 0;
+    starsOff();
   }
 
   public void ShowVictoryScreen(int starsEarned)
@@ -43,6 +44,7 @@ public class VictoryUI : MonoBehaviour
                   victoryText.DOScale(Vector3.zero, 1.6f).OnComplete(() =>
                   {
                      victoryText.gameObject.SetActive(false);
+                    starsOn();
                     foreach (var star in starImages)
                     {
                       star.sprite = emptyStarSprite;
@@ -96,6 +98,21 @@ public class VictoryUI : MonoBehaviour
       // Запускаємо через невелику затримку (наприклад, кожні 0.2 сек)
       DOVirtual.DelayedCall(delay, () => ps.Play());
       delay += 0.2f;
+    }
+  }
+
+  private void starsOff()
+  {
+    foreach (var star in starImages)
+    {
+      star.gameObject.SetActive(false); 
+    }
+  }
+  private void starsOn()
+  {
+    foreach (var star in starImages)
+    {
+      star.gameObject.SetActive(true);
     }
   }
 

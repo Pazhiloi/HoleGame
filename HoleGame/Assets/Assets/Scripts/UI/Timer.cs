@@ -7,14 +7,21 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
   [SerializeField] private TextMeshProUGUI timerText;
-  [SerializeField] float remainingTime;
+  [SerializeField] private float initialTime = 60f; // Початковий час рівня
   [SerializeField] private Slider timerSlider;
-  private bool isTimerEnded = false;
+  [Header("Налаштування Зірок")]
+  [Tooltip("Скільки часу має ЗАЛИШИТИСЯ для 3 зірок")]
+  [SerializeField] private float remainingForThreeStars = 30f;
+  [Tooltip("Скільки часу має ЗАЛИШИТИСЯ для 2 зірок")]
+  [SerializeField] private float remainingForTwoStars = 10f;
+  private float remainingTime;
+  private bool isTimerRunning = true;
 
   private void Awake()
   {
-    timerSlider.maxValue = remainingTime;
-    timerSlider.value = remainingTime;
+    remainingTime = initialTime;
+    timerSlider.maxValue = initialTime;
+    timerSlider.value = initialTime;
   }
 
   void Update()
@@ -24,7 +31,7 @@ public class Timer : MonoBehaviour
 
   private void HandleTimer()
   {
-    if (isTimerEnded) return;
+    if (!isTimerRunning) return;
     if (remainingTime > 0)
     {
       remainingTime -= Time.deltaTime;
@@ -34,9 +41,30 @@ public class Timer : MonoBehaviour
     {
       remainingTime = 0;
       timerSlider.value = 0;
-      isTimerEnded = true;
+      isTimerRunning = false;
+      OnTimerEnd();
     }
     UpdateUI();
+  }
+  public void StopTimer()
+  {
+    isTimerRunning = false;
+  }
+  private void OnTimerEnd()
+  {
+    // Логіка програшу, якщо час вийшов
+    Debug.Log("Time is up! Game Over.");
+  }
+  public int GetStarsResult()
+  {
+    // 3 зірки: залишилося більше ніж remainingForThreeStars
+    if (remainingTime >= remainingForThreeStars) return 3;
+
+    // 2 зірки: залишилося більше ніж remainingForTwoStars
+    if (remainingTime >= remainingForTwoStars) return 2;
+
+    // 1 зірка: просто встиг до кінця таймера
+    return 1;
   }
 
   void UpdateUI()
