@@ -243,6 +243,12 @@ public class VictoryManager : MonoBehaviour
       victoryUIScript.ShowVictoryScreen(stars);
     }
   }
+
+  public void Defeat()
+  {
+    timerScript.StopTimer();
+    victoryUIScript.ShowDefeatScreen();
+  }
   private int CalculateStars()
   {
     return timerScript.GetStarsResult();
