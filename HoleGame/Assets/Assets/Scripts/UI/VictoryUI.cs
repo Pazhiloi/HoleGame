@@ -6,11 +6,8 @@ using UnityEngine.UI;
 public class VictoryUI : MonoBehaviour
 {
   [SerializeField] private GameObject victoryPanel;
-  [SerializeField] private GameObject defeatPanel;
   [SerializeField] private CanvasGroup canvasGroupVictory; // Додай CanvasGroup на VictoryPanel для плавного проявлення
-  [SerializeField] private CanvasGroup canvasGroupDefeat; // Додай CanvasGroup на VictoryPanel для плавного проявлення
   [SerializeField] private RectTransform victoryText;
-  [SerializeField] private RectTransform defeatText;
   [Header("Зірки")]
   [SerializeField] private List<Image> starImages; // Сюди перетягни 3 картинки зірок
   [SerializeField] private Sprite fullStarSprite;  // Спрайт золотої зірки
@@ -22,29 +19,17 @@ public class VictoryUI : MonoBehaviour
   private void Awake()
   {
     // Ховаємо панель на старті
-    HandleVicDefPanel();
+    HandleVictoryPanel();
     starsOff();
   }
 
-  private void HandleVicDefPanel()
+  private void HandleVictoryPanel()
   {
     victoryPanel.SetActive(false);
-    defeatPanel.SetActive(false);
     if (canvasGroupVictory != null) canvasGroupVictory.alpha = 0;
-    if (canvasGroupDefeat != null) canvasGroupDefeat.alpha = 0;
   }
 
-  public void ShowDefeatScreen()
-  {
-    defeatPanel.SetActive(true);
-    canvasGroupDefeat?.DOFade(1f, 0.5f);
-
-    if (defeatText != null)
-    {
-      defeatText.localScale = Vector3.zero;
-      defeatText.DOScale(Vector3.one, 1.6f).SetEase(Ease.OutBack);
-    }
-  }
+ 
   public void ShowVictoryScreen(int starsEarned)
   {
     if (isAnimationPlaying) return;

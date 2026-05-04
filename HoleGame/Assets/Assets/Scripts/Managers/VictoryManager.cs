@@ -34,6 +34,7 @@ public class VictoryManager : MonoBehaviour
   [Header("Цілі перемоги")]
   [SerializeField] private List<VictoryGoal> victoryGoals;
   [SerializeField] private VictoryUI victoryUIScript;
+  [SerializeField] private DefeatUI defeatUIScript;
   [SerializeField] private Timer timerScript;
 
   private void Awake()
@@ -247,7 +248,7 @@ public class VictoryManager : MonoBehaviour
   public void Defeat()
   {
     timerScript.StopTimer();
-    victoryUIScript.ShowDefeatScreen();
+    defeatUIScript.ShowDefeatScreen();
   }
   private int CalculateStars()
   {
