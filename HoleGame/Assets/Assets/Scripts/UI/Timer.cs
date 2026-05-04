@@ -24,8 +24,7 @@ public class Timer : MonoBehaviour
   [SerializeField] private float remainingForTwoStars = 10f;
 
   [Header("Ефекти Віньєтки")]
-  [SerializeField] private Image vignetteImage; // Сюди перетягни об'єкт Vignette
-  [SerializeField] private float maxVignetteAlpha = 0.4f;
+  [SerializeField] private VignetteManager vignetteManager;
   private float remainingTime;
   private bool isTimerRunning = true;
   private bool isPulsing = false;// Щоб не запускати анімацію блимання щокадру
@@ -102,20 +101,15 @@ public class Timer : MonoBehaviour
   }
 
   private void StartVignette(){
-    if (vignetteImage != null)
+    if (vignetteManager != null)
     {
-      // Робимо віньєтку червоною (якщо хочеш саме червону тривогу)
-      vignetteImage.color = new Color(dangerColor.r, dangerColor.g, dangerColor.b, 0);
-
-      // Плавно проявляємо та змушуємо її "дихати"
-      vignetteImage.DOFade(maxVignetteAlpha, 0.5f).SetLoops(-1, LoopType.Yoyo);
+      vignetteManager.StartVignettePulse();
     }
   }
   private void StopVignette(){
-    if (vignetteImage != null)
+    if (vignetteManager != null)
     {
-      vignetteImage.DOKill();
-      vignetteImage.DOFade(0f, 0.2f); // Плавно прибираємо при зупинці
+      vignetteManager.StopVignette();
     }
   }
 
