@@ -122,6 +122,12 @@ public class Timer : MonoBehaviour
   }
   private void OnTimerEnd()
   {
+    isPulsing = false;
+    StopTimer();
+    timerText.color = dangerColor;
+    timerText.alpha = 1f;
+    remainingTime = 0;
+    timerSlider.value = 0;
     VictoryManager.Instance.Defeat();
   }
   public int GetStarsResult()
@@ -148,5 +154,31 @@ public class Timer : MonoBehaviour
     {
       timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
+  }
+
+  public void AddExtraTime(float seconds)
+  {
+    remainingTime += seconds;
+
+    // КРИТИЧНО: Оновлюємо максимум слайдера, якщо новий час більший за початковий
+    // Або просто скидаємоmaxValue на новий залишок часу
+    if (remainingTime > timerSlider.maxValue)
+    {
+      timerSlider.maxValue = remainingTime;
+    }
+
+    timerSlider.value = remainingTime; // Оновлюємо візуал відразу
+    isTimerRunning = true;
+    isPulsing = false;
+
+    if (sliderFillImage != null) sliderFillImage.color = normalColor;
+
+    // Зупиняємо анімації тексту
+    timerText.DOKill();
+    timerText.color = Color.white;
+    timerText.alpha = 1f; // Повертаємо видимість, бо вона могла бути на 0.2
+    timerText.transform.localScale = Vector3.one;
+
+    StopVignette();
   }
 }

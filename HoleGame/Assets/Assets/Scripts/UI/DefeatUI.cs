@@ -12,6 +12,7 @@ public class DefeatUI : MonoBehaviour
 
   [SerializeField] private RectTransform defeatText;
   [SerializeField] private GameObject ButtonsListParent;
+  [SerializeField] private Timer timer;
 
 
   private void Awake() {
@@ -62,6 +63,46 @@ public class DefeatUI : MonoBehaviour
       delay += 0.2f;
     }
   }
+
+
+  public  void ContinueForMoney()
+  {
+    Debug.Log("ContinueForMoney");
+    ProcessContinue();
+  }
+  public  void ContinueForAds()
+  {
+    Debug.Log("ContinueForAds");
+    ProcessContinue();
+  }
+  public void RetryButton()
+  {
+    Debug.Log("RetryButton");
+    TestManager.Instance.RestartLevel();
+  }
+
+  private void ProcessContinue()
+  {
+    // 1. Додаємо час (наприклад 60 секунд)
+    timer.AddExtraTime(15f);
+
+    // 2. Закриваємо панель з анімацією
+    HideDefeatScreen();
+  }
+
+  private void HideDefeatScreen()
+  {
+    // Плавне зникнення панелі
+    canvasGroupDefeat?.DOFade(0f, 0.5f).OnComplete(() =>
+    {
+      defeatPanel.SetActive(false);
+      ButtonsOff(); // Ховаємо кнопки для наступного разу
+    });
+
+    // Анімація тексту (зменшення)
+    defeatText?.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InBack);
+  }
+
 
 
 }

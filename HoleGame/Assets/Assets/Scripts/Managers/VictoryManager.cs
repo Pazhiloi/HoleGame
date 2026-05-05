@@ -247,7 +247,6 @@ public class VictoryManager : MonoBehaviour
 
   public void Defeat()
   {
-    timerScript.StopTimer();
     defeatUIScript.ShowDefeatScreen();
   }
   private int CalculateStars()
