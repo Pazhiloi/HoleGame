@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Hierarchy
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 371}
   m_MaxSize: {x: 10000, y: 10000}
@@ -320,8 +320,8 @@ MonoBehaviour:
     y: 0
     width: 454
     height: 947
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -726,9 +726,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 542.71716, y: 319.56876, z: 0}
+    m_Target: {x: 618.3276, y: 301.64578, z: -0.8275552}
     speed: 2
-    m_Value: {x: 542.71716, y: 319.56876, z: -0.00000006330757}
+    m_Value: {x: 618.3276, y: 301.64578, z: -0.8275552}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -778,9 +778,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 205.435
+    m_Target: 162.37192
     speed: 2
-    m_Value: 205.435
+    m_Value: 162.37192
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -798,7 +798,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
+  m_LastSceneViewRotation: {x: -0.14333452, y: -0.16192697, z: 0.02377904, w: -0.97604907}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
@@ -847,7 +847,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 543effff0854ffffa281ffff048bfffff0faffff1a760000c8780000d2780000e6780000e4790000fc7900005c940100229501000c9a01004aa001001ea1010088a101004ea401006aa5010082a50100
+      m_ExpandedIDs: f0faffff3a760000ee780000f8780000147a0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1020,7 +1020,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Skyden_Games/Free_Casual_GUI/Demo/Sprites/Icons
+    - Assets/Backrock Studios/LowPoly-Animals
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1030,16 +1030,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Skyden_Games/Free_Casual_GUI/Demo/Sprites/Icons
+  - Assets/Backrock Studios/LowPoly-Animals
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\unity\commercialProjects\HoleGame\HoleGame
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 201}
-    m_SelectedIDs: 547c0000
-    m_LastClickedID: 31828
-    m_ExpandedIDs: 00000000047c0000247c0000567c0000587c00005a7c00005e7c000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: a67d0000
+    m_LastClickedID: 32166
+    m_ExpandedIDs: 00000000367c0000407c0000567c0000887c00008a7c00008c7c000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1067,7 +1067,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000047c0000
+    m_ExpandedIDs: 00000000367c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1095,7 +1095,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000f2c000003cc800009cd50000027800001a780000447900008a7900000c820100
+    m_ExpandedInstanceIDs: c6230000f2c000003cc800009cd50000027800001a780000447900008a7900000c8201005c7a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1208,7 +1208,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Assets/Art/Sprites
+    - Assets
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1218,16 +1218,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 53
   m_LastFolders:
-  - Assets/Assets/Art/Sprites
+  - Assets
   m_LastFoldersGridSize: 53
   m_LastProjectPath: D:\unity\commercialProjects\HoleGame\HoleGame
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: ecfa0000
-    m_LastClickedID: 64236
-    m_ExpandedIDs: 00000000047c00000c7c0000547d0000567d000000ca9a3bffffff7f
+    m_SelectedIDs: 367c0000
+    m_LastClickedID: 31798
+    m_ExpandedIDs: 00000000367c00003e7c0000867d000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1255,7 +1255,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000047c0000
+    m_ExpandedIDs: 00000000367c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

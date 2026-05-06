@@ -56,7 +56,7 @@ public class Timer : MonoBehaviour
       timerSlider.value = remainingTime;
       UpdateVisuals();
     }
-    else if (remainingTime <= 0)
+    else 
     {
       remainingTime = 0;
       timerSlider.value = 0;
@@ -69,24 +69,41 @@ public class Timer : MonoBehaviour
   private void UpdateVisuals()
   {
     float ratio = remainingTime / initialTime;
+
+    // 1. Логіка кольору слайдера
     if (sliderFillImage != null)
     {
-      if (ratio <= 0.2f || remainingTime <= 10f) // 1/5 часу
+      if (remainingTime <= 10f || ratio <= 0.2f)
         sliderFillImage.color = dangerColor;
-      else if (ratio <= 0.5f) // Половина часу
+      else if (ratio <= 0.5f)
         sliderFillImage.color = warningColor;
       else
         sliderFillImage.color = normalColor;
     }
 
+    // 2. Логіка пульсації
     if (remainingTime <= 10f && !isPulsing)
     {
-      StartTextPulse();
+       StartTextPulse();
     }
+    
+  }
+
+  private void ResetVisualsToNormal()
+  {
+    isPulsing = false;
+    timerText.DOKill();
+    timerText.color = Color.white;
+    timerText.alpha = 1f;
+    timerText.transform.localScale = Vector3.one;
+    StopVignette();
   }
 
   private void StartTextPulse()
   {
+    if (!VictoryManager.Instance.isDefeat)
+    {
+      
     isPulsing = true;
     timerText.color = dangerColor;
 
@@ -98,6 +115,8 @@ public class Timer : MonoBehaviour
 
     // НОВЕ: Робота з віньєткою
     StartVignette();
+    }
+
   }
 
   private void StartVignette(){
@@ -116,19 +135,17 @@ public class Timer : MonoBehaviour
   public void StopTimer()
   {
     isTimerRunning = false;
-    timerText.DOKill();
     timerText.transform.localScale = Vector3.one;
-    StopVignette();
+    ResetVisualsToNormal();
   }
   private void OnTimerEnd()
   {
-    isPulsing = false;
-    StopTimer();
-    timerText.color = dangerColor;
-    timerText.alpha = 1f;
+    VictoryManager.Instance.Defeat();
     remainingTime = 0;
     timerSlider.value = 0;
-    VictoryManager.Instance.Defeat();
+    // Зупиняємо пульсацію, але залишаємо червоний колір
+    timerText.alpha = 1f;
+    StopTimer();
   }
   public int GetStarsResult()
   {
@@ -158,27 +175,15 @@ public class Timer : MonoBehaviour
 
   public void AddExtraTime(float seconds)
   {
+    VictoryManager.Instance.isDefeat = false;
     remainingTime += seconds;
+    
 
-    // КРИТИЧНО: Оновлюємо максимум слайдера, якщо новий час більший за початковий
-    // Або просто скидаємоmaxValue на новий залишок часу
     if (remainingTime > timerSlider.maxValue)
-    {
       timerSlider.maxValue = remainingTime;
-    }
 
-    timerSlider.value = remainingTime; // Оновлюємо візуал відразу
+    timerSlider.value = remainingTime;
     isTimerRunning = true;
-    isPulsing = false;
 
-    if (sliderFillImage != null) sliderFillImage.color = normalColor;
-
-    // Зупиняємо анімації тексту
-    timerText.DOKill();
-    timerText.color = Color.white;
-    timerText.alpha = 1f; // Повертаємо видимість, бо вона могла бути на 0.2
-    timerText.transform.localScale = Vector3.one;
-
-    StopVignette();
   }
 }

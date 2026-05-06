@@ -37,6 +37,8 @@ public class VictoryManager : MonoBehaviour
   [SerializeField] private DefeatUI defeatUIScript;
   [SerializeField] private Timer timerScript;
 
+  [HideInInspector] public bool isDefeat = false;
+
   private void Awake()
   {
     InitializeSingleton();
@@ -247,7 +249,9 @@ public class VictoryManager : MonoBehaviour
 
   public void Defeat()
   {
+     isDefeat = true;
     defeatUIScript.ShowDefeatScreen();
+
   }
   private int CalculateStars()
   {
