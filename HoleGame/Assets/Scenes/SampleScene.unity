@@ -47198,6 +47198,7 @@ MonoBehaviour:
   victoryUIScript: {fileID: 1548731960}
   defeatUIScript: {fileID: 1548731961}
   timerScript: {fileID: 1673310295}
+  isDefeat: 0
 --- !u!1 &1156866582
 GameObject:
   m_ObjectHideFlags: 0
@@ -55856,15 +55857,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 1673310296}
-  initialTime: 5
   timerSlider: {fileID: 561462182}
+  sliderFillImage: {fileID: 2129067735}
+  vignetteManager: {fileID: 832575520}
+  initialTime: 5
   normalColor: {r: 0, g: 1, b: 0, a: 1}
   warningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   dangerColor: {r: 1, g: 0, b: 0, a: 1}
-  sliderFillImage: {fileID: 2129067735}
   remainingForThreeStars: 30
   remainingForTwoStars: 10
-  vignetteManager: {fileID: 832575520}
 --- !u!114 &1673310296
 MonoBehaviour:
   m_ObjectHideFlags: 0
