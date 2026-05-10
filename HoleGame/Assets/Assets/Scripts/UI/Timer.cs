@@ -201,5 +201,12 @@ public class Timer : MonoBehaviour
     timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
   }
 
-  
+  public string GetCurrentTimeText()
+  {
+    int minutes = Mathf.FloorToInt(Mathf.Max(remainingTime, 0) / 60);
+    int seconds = Mathf.FloorToInt(Mathf.Max(remainingTime, 0) % 60);
+    return string.Format("{0:00}:{1:00}", minutes, seconds);
+  }
+
+
 }

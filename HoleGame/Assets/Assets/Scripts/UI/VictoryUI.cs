@@ -2,12 +2,14 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class VictoryUI : MonoBehaviour
 {
   [SerializeField] private GameObject victoryPanel;
   [SerializeField] private CanvasGroup canvasGroupVictory; // Додай CanvasGroup на VictoryPanel для плавного проявлення
   [SerializeField] private RectTransform victoryText;
+  [SerializeField] private TextMeshProUGUI victoryTimeText;
   [Header("Зірки")]
   [SerializeField] private List<Image> starImages; // Сюди перетягни 3 картинки зірок
   [SerializeField] private Sprite fullStarSprite;  // Спрайт золотої зірки
@@ -30,13 +32,18 @@ public class VictoryUI : MonoBehaviour
   }
 
  
-  public void ShowVictoryScreen(int starsEarned)
+  public void ShowVictoryScreen(int starsEarned, string finalTime)
   {
     if (isAnimationPlaying) return;
     isAnimationPlaying = true;
    
 
     victoryPanel.SetActive(true);
+
+      if (victoryTimeText != null)
+      {
+        victoryTimeText.text = finalTime;
+      }
 
     // Плавна поява фону
     canvasGroupVictory?.DOFade(1f, 0.5f);
@@ -60,6 +67,7 @@ public class VictoryUI : MonoBehaviour
                     // Цей код виконається ТІЛЬКИ після завершення анімації тексту
                     LaunchFireworks();
                     AnimateStars(starsEarned);
+
                   });
                  
                 });

@@ -241,9 +241,10 @@ public class VictoryManager : MonoBehaviour
     bool allGoalsMet = victoryGoals.TrueForAll(g => g.remainingCount <= 0);
     if (allGoalsMet)
     {
+      string finalTime = timerScript.GetCurrentTimeText();
       timerScript.StopTimerHard();
       int stars = CalculateStars(); 
-      victoryUIScript.ShowVictoryScreen(stars);
+      victoryUIScript.ShowVictoryScreen(stars, finalTime);
     }
   }
 
