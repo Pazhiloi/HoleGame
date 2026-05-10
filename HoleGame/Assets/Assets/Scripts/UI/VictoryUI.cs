@@ -7,6 +7,8 @@ using TMPro;
 public class VictoryUI : MonoBehaviour
 {
   [SerializeField] private GameObject victoryPanel;
+  [SerializeField] private RectTransform victoryTimeTransform; 
+  [SerializeField] private RectTransform continueButtonTransform;
   [SerializeField] private CanvasGroup canvasGroupVictory; // Додай CanvasGroup на VictoryPanel для плавного проявлення
   [SerializeField] private RectTransform victoryText;
   [SerializeField] private TextMeshProUGUI victoryTimeText;
@@ -39,6 +41,9 @@ public class VictoryUI : MonoBehaviour
    
 
     victoryPanel.SetActive(true);
+    victoryTimeTransform.localScale = Vector3.zero;
+    continueButtonTransform.localScale = Vector3.zero;
+    
 
       if (victoryTimeText != null)
       {
@@ -72,10 +77,23 @@ public class VictoryUI : MonoBehaviour
                  
                 });
     }
+
+    
   }
 
 
+private void AppearTimeAndButton()
+  {
+    Sequence victorySeq = DOTween.Sequence();
 
+    victorySeq.Append(victoryTimeTransform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutBack));
+
+    // Додаємо невелику паузу між текстом і кнопкою
+    victorySeq.AppendInterval(0.2f);
+
+    // З'являється кнопка продовжити
+    victorySeq.Append(continueButtonTransform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutBack));
+  }
   private void AnimateStars(int starsEarned)
   {
     foreach (var star in starImages) star.rectTransform.DOKill();
@@ -102,8 +120,10 @@ public class VictoryUI : MonoBehaviour
       starSequence.AppendInterval(0.15f);
     }
     // В кінці всієї послідовності дозволяємо запуск знову (хоча панель уже буде закрита)
-    starSequence.OnComplete(() => isAnimationPlaying = false);
-
+    starSequence.OnComplete(() => {
+      isAnimationPlaying = false;
+      AppearTimeAndButton();
+    });
   }
 
   private void LaunchFireworks()
