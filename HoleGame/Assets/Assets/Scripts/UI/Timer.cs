@@ -61,7 +61,7 @@ public class Timer : MonoBehaviour
     else
     {
       // ВАЖЛИВО: Спочатку зупиняємо все, потім викликаємо поразку
-      StopTimerHard();
+      StopTimerHard(Color.white);
       VictoryManager.Instance.Defeat();
     }
     UpdateUI();
@@ -101,7 +101,7 @@ public class Timer : MonoBehaviour
       sliderFillImage.color = normalColor;
   }
 
-  public void StopTimerHard()
+  public void StopTimerHard(Color targetColor)
   {
     isTimerRunning = false;
     isPulsing = false; // Обов'язково скидаємо тут
@@ -111,7 +111,7 @@ public class Timer : MonoBehaviour
     timerText.transform.DOKill(true);
 
     // Примусово ставимо фінальний стан
-    timerText.color = dangerColor;
+    timerText.color = targetColor;
     timerText.alpha = 1f;
     timerText.transform.localScale = Vector3.one;
 

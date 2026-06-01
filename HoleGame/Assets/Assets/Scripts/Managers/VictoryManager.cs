@@ -242,7 +242,7 @@ public class VictoryManager : MonoBehaviour
     if (allGoalsMet)
     {
       string finalTime = timerScript.GetCurrentTimeText();
-      timerScript.StopTimerHard();
+      timerScript.StopTimerHard(Color.white);
       int stars = CalculateStars(); 
       victoryUIScript.ShowVictoryScreen(stars, finalTime);
     }
