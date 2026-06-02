@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,9 @@ public class PlayerBooster : MonoBehaviour
   private PlayerMovement playerMovement;
   private float _baseSpeed;
   private Coroutine _speedBoostCoroutine;
-  
+  [Header("Magnet Settings")]
+  [SerializeField] private Magnet playerMagnet;
+
 
   void Awake()
   {
@@ -35,6 +38,16 @@ public class PlayerBooster : MonoBehaviour
     {
       OnSpeedButtonClick();
     }
+    if (Input.GetKeyDown(KeyCode.Alpha3))
+    {
+      OnMagnetButtonClick();
+    }
+    
+  }
+
+  private void OnMagnetButtonClick()
+  {
+    playerMagnet.ActivateMagnet(100f);
   }
 
   public void OnScaleButtonClick()

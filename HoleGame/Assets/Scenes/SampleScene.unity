@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 27354563}
   - component: {fileID: 27354562}
   - component: {fileID: 27354561}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (43)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &27354563
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -593,7 +593,7 @@ GameObject:
   - component: {fileID: 80990436}
   - component: {fileID: 80990435}
   - component: {fileID: 80990434}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (31)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -743,7 +743,7 @@ GameObject:
   - component: {fileID: 95640002}
   - component: {fileID: 95640001}
   - component: {fileID: 95640000}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (44)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1222,7 +1222,7 @@ GameObject:
   - component: {fileID: 155688076}
   - component: {fileID: 155688075}
   - component: {fileID: 155688074}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (3)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &155688076
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1473,6 +1473,7 @@ Transform:
   - {fileID: 1442938969}
   - {fileID: 836495207}
   - {fileID: 910384405}
+  - {fileID: 361719351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &178716766
@@ -1583,6 +1584,7 @@ MonoBehaviour:
   scaleDuration: 10
   speedBoostScale: 2
   speedDuration: 10
+  playerMagnet: {fileID: 361719352}
 --- !u!114 &178716771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,7 +1636,7 @@ GameObject:
   - component: {fileID: 183887634}
   - component: {fileID: 183887633}
   - component: {fileID: 183887632}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (13)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1859,7 +1861,7 @@ GameObject:
   - component: {fileID: 208990670}
   - component: {fileID: 208990669}
   - component: {fileID: 208990668}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (23)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1908,7 +1910,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &208990670
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2120,7 +2122,7 @@ GameObject:
   - component: {fileID: 236949204}
   - component: {fileID: 236949203}
   - component: {fileID: 236949202}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (35)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -2169,7 +2171,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &236949204
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2408,7 +2410,7 @@ GameObject:
   - component: {fileID: 259392133}
   - component: {fileID: 259392132}
   - component: {fileID: 259392131}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (32)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -2457,7 +2459,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &259392133
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2558,7 +2560,7 @@ GameObject:
   - component: {fileID: 271336896}
   - component: {fileID: 271336895}
   - component: {fileID: 271336894}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (18)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -2708,7 +2710,7 @@ GameObject:
   - component: {fileID: 272329323}
   - component: {fileID: 272329322}
   - component: {fileID: 272329321}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (7)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -8118,6 +8120,55 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &361719350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 361719351}
+  - component: {fileID: 361719352}
+  m_Layer: 0
+  m_Name: BoosterScripts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &361719351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361719350}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 178716765}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &361719352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361719350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f93feee6ccd8a4592b5c91670cafb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnetRadius: 5
+  pullSpeed: 8
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &379568662
 GameObject:
   m_ObjectHideFlags: 0
@@ -8132,7 +8183,7 @@ GameObject:
   - component: {fileID: 379568665}
   - component: {fileID: 379568664}
   - component: {fileID: 379568663}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (8)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -8521,7 +8572,7 @@ GameObject:
   - component: {fileID: 421880069}
   - component: {fileID: 421880068}
   - component: {fileID: 421880067}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (15)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -8570,7 +8621,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &421880069
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8909,7 +8960,7 @@ GameObject:
   - component: {fileID: 472450543}
   - component: {fileID: 472450542}
   - component: {fileID: 472450541}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (10)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -8958,7 +9009,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &472450543
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9059,7 +9110,7 @@ GameObject:
   - component: {fileID: 472975089}
   - component: {fileID: 472975088}
   - component: {fileID: 472975087}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (37)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -9284,7 +9335,7 @@ GameObject:
   - component: {fileID: 490103351}
   - component: {fileID: 490103350}
   - component: {fileID: 490103349}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (45)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -9348,7 +9399,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &490103351
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9868,7 +9919,7 @@ GameObject:
   - component: {fileID: 569953432}
   - component: {fileID: 569953431}
   - component: {fileID: 569953430}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (11)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -15218,7 +15269,7 @@ GameObject:
   - component: {fileID: 700626881}
   - component: {fileID: 700626880}
   - component: {fileID: 700626879}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (14)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -30923,7 +30974,7 @@ GameObject:
   - component: {fileID: 856088599}
   - component: {fileID: 856088598}
   - component: {fileID: 856088597}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (22)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -30972,7 +31023,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &856088599
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -36145,7 +36196,7 @@ GameObject:
   - component: {fileID: 893649288}
   - component: {fileID: 893649287}
   - component: {fileID: 893649286}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (24)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -36295,7 +36346,7 @@ GameObject:
   - component: {fileID: 897841114}
   - component: {fileID: 897841113}
   - component: {fileID: 897841112}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (36)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -41439,7 +41490,7 @@ GameObject:
   - component: {fileID: 928140146}
   - component: {fileID: 928140145}
   - component: {fileID: 928140144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (6)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -46995,7 +47046,7 @@ GameObject:
   - component: {fileID: 1079740874}
   - component: {fileID: 1079740873}
   - component: {fileID: 1079740872}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (4)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -47044,7 +47095,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1079740874
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -47295,7 +47346,7 @@ GameObject:
   - component: {fileID: 1117343394}
   - component: {fileID: 1117343393}
   - component: {fileID: 1117343392}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (1)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -47655,7 +47706,7 @@ GameObject:
   - component: {fileID: 1156866586}
   - component: {fileID: 1156866585}
   - component: {fileID: 1156866584}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (49)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -47719,7 +47770,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1156866586
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -47805,7 +47856,7 @@ GameObject:
   - component: {fileID: 1200977027}
   - component: {fileID: 1200977026}
   - component: {fileID: 1200977025}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (30)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -48038,7 +48089,7 @@ GameObject:
   - component: {fileID: 1219644751}
   - component: {fileID: 1219644750}
   - component: {fileID: 1219644749}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (20)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -48087,7 +48138,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1219644751
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -53529,7 +53580,7 @@ GameObject:
   - component: {fileID: 1299647272}
   - component: {fileID: 1299647271}
   - component: {fileID: 1299647270}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (21)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -53578,7 +53629,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1299647272
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -53771,7 +53822,7 @@ GameObject:
   - component: {fileID: 1320628579}
   - component: {fileID: 1320628578}
   - component: {fileID: 1320628577}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (29)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -53820,7 +53871,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1320628579
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -53921,7 +53972,7 @@ GameObject:
   - component: {fileID: 1350083238}
   - component: {fileID: 1350083237}
   - component: {fileID: 1350083236}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (42)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -54281,7 +54332,7 @@ GameObject:
   - component: {fileID: 1399044401}
   - component: {fileID: 1399044400}
   - component: {fileID: 1399044399}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (17)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -54330,7 +54381,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1399044401
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -54431,7 +54482,7 @@ GameObject:
   - component: {fileID: 1417481864}
   - component: {fileID: 1417481863}
   - component: {fileID: 1417481862}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (16)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -54480,7 +54531,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1417481864
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -54581,7 +54632,7 @@ GameObject:
   - component: {fileID: 1433411027}
   - component: {fileID: 1433411026}
   - component: {fileID: 1433411025}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (39)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -54965,7 +55016,7 @@ GameObject:
   - component: {fileID: 1446233598}
   - component: {fileID: 1446233597}
   - component: {fileID: 1446233596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (34)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -55014,7 +55065,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1446233598
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -55190,7 +55241,7 @@ GameObject:
   - component: {fileID: 1498534156}
   - component: {fileID: 1498534155}
   - component: {fileID: 1498534154}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (2)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -55474,7 +55525,7 @@ GameObject:
   - component: {fileID: 1527711229}
   - component: {fileID: 1527711228}
   - component: {fileID: 1527711227}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (12)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -55969,7 +56020,7 @@ GameObject:
   - component: {fileID: 1590764829}
   - component: {fileID: 1590764828}
   - component: {fileID: 1590764827}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (25)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -56119,7 +56170,7 @@ GameObject:
   - component: {fileID: 1653737020}
   - component: {fileID: 1653737019}
   - component: {fileID: 1653737018}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (19)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -56344,7 +56395,7 @@ GameObject:
   - component: {fileID: 1664748395}
   - component: {fileID: 1664748394}
   - component: {fileID: 1664748393}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (47)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -56408,7 +56459,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1664748395
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -56534,7 +56585,7 @@ MonoBehaviour:
   timerSlider: {fileID: 561462182}
   sliderFillImage: {fileID: 2129067735}
   vignetteManager: {fileID: 832575520}
-  initialTime: 10
+  initialTime: 60
   normalColor: {r: 0, g: 1, b: 0, a: 1}
   warningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   dangerColor: {r: 1, g: 0, b: 0, a: 1}
@@ -56651,7 +56702,7 @@ GameObject:
   - component: {fileID: 1709285027}
   - component: {fileID: 1709285026}
   - component: {fileID: 1709285025}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (40)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -56801,7 +56852,7 @@ GameObject:
   - component: {fileID: 1721910099}
   - component: {fileID: 1721910098}
   - component: {fileID: 1721910097}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (41)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -57351,7 +57402,7 @@ GameObject:
   - component: {fileID: 1790359102}
   - component: {fileID: 1790359101}
   - component: {fileID: 1790359100}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (38)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -57652,7 +57703,7 @@ GameObject:
   - component: {fileID: 1870778889}
   - component: {fileID: 1870778888}
   - component: {fileID: 1870778887}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (9)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -57701,7 +57752,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1870778889
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -57802,7 +57853,7 @@ GameObject:
   - component: {fileID: 1904202985}
   - component: {fileID: 1904202984}
   - component: {fileID: 1904202983}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (46)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -57952,7 +58003,7 @@ GameObject:
   - component: {fileID: 1908554433}
   - component: {fileID: 1908554432}
   - component: {fileID: 1908554431}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (27)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -58001,7 +58052,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1908554433
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -63265,7 +63316,7 @@ GameObject:
   - component: {fileID: 1967157829}
   - component: {fileID: 1967157828}
   - component: {fileID: 1967157827}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (33)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -63314,7 +63365,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &1967157829
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -63415,7 +63466,7 @@ GameObject:
   - component: {fileID: 2058165869}
   - component: {fileID: 2058165868}
   - component: {fileID: 2058165867}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (26)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -63464,7 +63515,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &2058165869
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -63565,7 +63616,7 @@ GameObject:
   - component: {fileID: 2071583404}
   - component: {fileID: 2071583403}
   - component: {fileID: 2071583402}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (48)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -63715,7 +63766,7 @@ GameObject:
   - component: {fileID: 2074873838}
   - component: {fileID: 2074873837}
   - component: {fileID: 2074873836}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (5)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -63764,7 +63815,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &2074873838
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -68929,7 +68980,7 @@ GameObject:
   - component: {fileID: 2103610466}
   - component: {fileID: 2103610465}
   - component: {fileID: 2103610464}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject (28)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -68978,7 +69029,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 1
+  enemyType: 0
 --- !u!135 &2103610466
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -69363,7 +69414,7 @@ GameObject:
   - component: {fileID: 2761895656282973566}
   - component: {fileID: 848343707276506382}
   - component: {fileID: 5764940910251771403}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyObject
   m_TagString: Enemy
   m_Icon: {fileID: 0}
