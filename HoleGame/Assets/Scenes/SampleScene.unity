@@ -198,7 +198,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &27354563
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &155688076
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1910,7 +1910,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &208990670
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2171,7 +2171,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &236949204
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2459,7 +2459,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &259392133
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8232,7 +8232,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &379568665
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8621,7 +8621,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &421880069
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9009,7 +9009,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &472450543
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9174,7 +9174,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &472975089
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9399,7 +9399,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &490103351
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9968,7 +9968,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &569953432
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -15318,7 +15318,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &700626881
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -31023,7 +31023,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &856088599
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -47095,7 +47095,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1079740874
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -47770,7 +47770,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1156866586
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -48138,7 +48138,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1219644751
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -53629,7 +53629,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1299647272
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -53871,7 +53871,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1320628579
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -54381,7 +54381,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1399044401
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -54531,7 +54531,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1417481864
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -54696,7 +54696,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1433411027
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -55065,7 +55065,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1446233598
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -55290,7 +55290,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1498534156
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -56459,7 +56459,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1664748395
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -56916,7 +56916,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1721910099
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -57752,7 +57752,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1870778889
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -58052,7 +58052,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1908554433
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -63365,7 +63365,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &1967157829
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -63515,7 +63515,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &2058165869
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -63815,7 +63815,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &2074873838
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -69029,7 +69029,7 @@ MonoBehaviour:
   isConsumed: 0
   isReqForVictory: 1
   expforEnemy: 1
-  enemyType: 0
+  enemyType: 1
 --- !u!135 &2103610466
 SphereCollider:
   m_ObjectHideFlags: 0

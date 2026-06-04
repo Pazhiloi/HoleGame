@@ -42,20 +42,23 @@ public class Magnet : MonoBehaviour
 
   private void PullEnemies()
   {
-    // Знаходимо всіх коллайдерів ворогів у радіусі магніту
-    Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, magnetRadius, enemyLayer);
+    Enemy[] allEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
 
-    foreach (Collider2D enemyCollider in enemies)
+    foreach (Enemy enemy in allEnemies)
     {
-      // Тягнемо ворога до позиції гравця
-      Transform enemyTransform = enemyCollider.transform;
+      // Перевіряємо відстань між гравцем і цим ворогом
+      float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
-      // Плавно переміщуємо ворога до гравця
-      enemyTransform.position = Vector3.MoveTowards(
-          enemyTransform.position,
-          transform.position,
-          pullSpeed * Time.deltaTime
-      );
+      // Якщо ворог увійшов у радіус дії магніту
+      if (distance <= magnetRadius)
+      {
+        // Плавно тягнемо його до гравця
+        enemy.transform.position = Vector3.MoveTowards(
+            enemy.transform.position,
+            transform.position,
+            pullSpeed * Time.deltaTime
+        );
+      }
     }
   }
 
