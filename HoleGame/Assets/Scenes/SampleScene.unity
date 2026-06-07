@@ -1474,6 +1474,7 @@ Transform:
   - {fileID: 836495207}
   - {fileID: 910384405}
   - {fileID: 361719351}
+  - {fileID: 1634038083}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &178716766
@@ -1585,6 +1586,7 @@ MonoBehaviour:
   speedBoostScale: 2
   speedDuration: 10
   playerMagnet: {fileID: 361719352}
+  magnetDuration: 10
 --- !u!114 &178716771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8169,6 +8171,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  magnetVFXObject: {fileID: 1634038082}
 --- !u!1 &370170621
 GameObject:
   m_ObjectHideFlags: 0
@@ -70725,8 +70728,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1634038082}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -3.364}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -70734,7 +70737,7 @@ Transform:
   - {fileID: 1734591517}
   - {fileID: 1604042157}
   - {fileID: 370170622}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 178716765}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1653737017
 GameObject:
@@ -88920,4 +88923,3 @@ SceneRoots:
   - {fileID: 597751917}
   - {fileID: 587524124}
   - {fileID: 1548731959}
-  - {fileID: 1634038083}

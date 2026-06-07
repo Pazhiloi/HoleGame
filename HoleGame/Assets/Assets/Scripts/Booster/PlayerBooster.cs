@@ -20,6 +20,7 @@ public class PlayerBooster : MonoBehaviour
   private Coroutine _speedBoostCoroutine;
   [Header("Magnet Settings")]
   [SerializeField] private Magnet playerMagnet;
+  [SerializeField] private float  magnetDuration = 10f;
 
 
   void Awake()
@@ -47,7 +48,7 @@ public class PlayerBooster : MonoBehaviour
 
   private void OnMagnetButtonClick()
   {
-    playerMagnet.ActivateMagnet(100f);
+    playerMagnet.ActivateMagnet(magnetDuration);
   }
 
   public void OnScaleButtonClick()

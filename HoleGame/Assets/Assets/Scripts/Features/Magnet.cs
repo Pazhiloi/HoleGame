@@ -8,9 +8,20 @@ public class Magnet : MonoBehaviour
   [SerializeField] private float magnetRadius = 5f;       // Радіус дії магніту
   [SerializeField] private float pullSpeed = 8f;         // Швидкість притягування
   [SerializeField] private LayerMask enemyLayer;         // Шар (Layer) ворогів, щоб не перевіряти зайві об'єкти
-
+  [Header("Ефекти Візуалізації (VFX)")]
+  [SerializeField] private GameObject magnetVFXObject;   // Об'єкт з ефектом магніту
   private bool isActive = false;
   private float durationTimer = 0f;
+  private ParticleSystem vfxParticleSystem;
+
+  private void Awake()
+  {
+    // На старті гри перевіряємо, чи є на об'єкті система часток, щоб керувати нею коректно
+    if (magnetVFXObject != null)
+    {
+      magnetVFXObject.SetActive(false); // Про всяк випадок вимикаємо на старті
+    }
+  }
 
   void Update()
   {
@@ -26,7 +37,13 @@ public class Magnet : MonoBehaviour
     durationTimer = duration;
     isActive = true;
     Debug.Log($"Магніт активовано на {duration} сек!");
-  }
+    // Вмикаємо VFX ефект
+    if (magnetVFXObject != null)
+    {
+      magnetVFXObject.SetActive(true);
+    }
+
+    }
 
   private void HandleMagnetDuration()
   {
@@ -66,7 +83,12 @@ public class Magnet : MonoBehaviour
   {
     isActive = false;
     Debug.Log("Магніт вимкнено!");
-  }
+    // Вимикаємо VFX ефект
+    if (magnetVFXObject != null)
+    {
+      magnetVFXObject.SetActive(false);
+    }
+    }
 
   // Візуалізація радіусу магніту в редакторі Unity
   private void OnDrawGizmosSelected()
